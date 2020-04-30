@@ -6,11 +6,10 @@ import 'package:lottery/models/MyLotteryList.dart';
 const host = 'https://www.geniecontents.com';
 
 Future<Lottery> fetchLottery(drwNo) async {
-  final response = await http.get(
-      "https://www.geniecontents.com/api/v1/lotto?drawNo=20");
-  print("${jsonDecode(response.body)['body']}");
-  if (response.statusCode == 200) {
-    return Lottery.fromJson(json.decode(response.body)['body']);
+  final response = await http.get("$host/api/v1/lotto?drawNo=$drwNo");
+  var responseBody = json.decode(response.body);
+  if (responseBody['statusCode'] == '200') {
+    return Lottery.fromJson(responseBody['body']);
   } else {
     throw Exception('로또정보가 없는데염');
   }
@@ -46,7 +45,7 @@ Future<List<MyLotteryList>> fetchMyLottery(int drwNo) async {
         "totalAmount": 100,
         "drwNo": 908,
         "lotteryNumbers": {
-          "num1": 3,
+          "num1": 2,
           "num2": 10,
           "num3": 13,
           "num4": 27,

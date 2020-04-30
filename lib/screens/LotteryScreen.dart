@@ -42,25 +42,13 @@ class _LotteryScreenState extends State<LotteryScreen> {
         child: LayoutBuilder(
           builder: (context, index) {
             ScreenUtil.init(context, width: 550, height: 1334);
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Container(
-                  width: ScreenUtil().setWidth(550),
-                  height: ScreenUtil().setHeight(850),
-                  child: LotteryResult(
-                    myLotteryList: myLotteryList,
-                    lottery: lottery,
-                  ),
-                ),
-                Container(
-                  height: ScreenUtil().setHeight(200),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                  ),
-                  child: Center(child: Text('광고넣을거지롱')),
-                )
-              ],
+            return Container(
+              width: ScreenUtil().setWidth(550),
+              height: ScreenUtil().setHeight(1334),
+              child: LotteryResult(
+                myLotteryList: myLotteryList,
+                lottery: lottery,
+              ),
             );
           },
         ),

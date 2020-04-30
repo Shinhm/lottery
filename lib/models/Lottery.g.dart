@@ -25,16 +25,14 @@ Map<String, dynamic> _$LotteryResultModelToJson(LotteryResultModel instance) =>
 
 Lottery _$LotteryFromJson(Map<String, dynamic> json) {
   return Lottery(
-    json['lottoResult'] == null
-        ? null
-        : LotteryResultModel.fromJson(
-            json['lottoResult'] as Map<String, dynamic>),
+    (json['lottoResult'] as List)
+        ?.map((e) => e == null
+            ? null
+            : LotteryResultModel.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
     json['totalSellingPrice'] as int,
     json['drawNo'] as int,
     json['drawDate'] as String,
-    json['firstWinamnt'] as int,
-    json['firstPrzwnerCo'] as int,
-    json['firstAccumamnt'] as int,
     json['num1'] as int,
     json['num2'] as int,
     json['num3'] as int,
@@ -42,6 +40,7 @@ Lottery _$LotteryFromJson(Map<String, dynamic> json) {
     json['num5'] as int,
     json['num6'] as int,
     json['bonusNum'] as int,
+    json['drawDateYn'] as String,
   );
 }
 
@@ -50,9 +49,7 @@ Map<String, dynamic> _$LotteryToJson(Lottery instance) => <String, dynamic>{
       'totalSellingPrice': instance.totalSellingPrice,
       'drawNo': instance.drawNo,
       'drawDate': instance.drawDate,
-      'firstWinamnt': instance.firstWinamnt,
-      'firstPrzwnerCo': instance.firstPrzwnerCo,
-      'firstAccumamnt': instance.firstAccumamnt,
+      'drawDateYn': instance.drawDateYn,
       'num1': instance.num1,
       'num2': instance.num2,
       'num3': instance.num3,

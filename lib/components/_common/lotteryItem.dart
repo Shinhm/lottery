@@ -15,6 +15,28 @@ class LotteryItem extends StatelessWidget {
       this.active})
       : super(key: key);
 
+  Color colorMaker(int lotteryNumber) {
+    Color color;
+    switch ((lotteryNumber - 1) ~/ 10) {
+      case 0:
+        color = Colors.yellow;
+        break;
+      case 1:
+        color = Colors.blue;
+        break;
+      case 2:
+        color = Colors.red;
+        break;
+      case 3:
+        color = Colors.black54;
+        break;
+      case 4:
+        color = Colors.green;
+        break;
+    }
+    return color;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -24,16 +46,16 @@ class LotteryItem extends StatelessWidget {
         child: Text(
           "$lotteryNumber",
           style: TextStyle(
-              color: fontColor != null
-                  ? fontColor
-                  : Color.fromRGBO(78, 80, 135, 1),
+              color: active
+                  ? Color.fromRGBO(68, 59, 201, 1)
+                  : Color.fromRGBO(255, 255, 255, 1),
               fontWeight: FontWeight.bold,
               fontSize: ScreenUtil().setSp(25)),
         ),
       ),
       decoration: BoxDecoration(
           color: active
-              ? Color.fromRGBO(255, 90, 89, 1)
+              ? colorMaker(lotteryNumber)
               : backgroundColor != null
                   ? backgroundColor
                   : Color.fromRGBO(244, 245, 252, 1),

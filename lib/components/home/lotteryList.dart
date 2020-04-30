@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottery/components/_common/lotteryItem.dart';
 import 'package:lottery/models/MyLotteryList.dart';
@@ -15,27 +16,51 @@ class _LotteryListState extends State<LotteryList> {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(
-          right: ScreenUtil().setSp(40), left: ScreenUtil().setSp(40), top: ScreenUtil().setSp(60)),
+          right: ScreenUtil().setSp(40),
+          left: ScreenUtil().setSp(40),
+          top: ScreenUtil().setSp(20)),
       decoration: BoxDecoration(
         color: Color.fromRGBO(255, 255, 255, 1),
         borderRadius: BorderRadius.only(
             topRight: Radius.circular(40), topLeft: Radius.circular(40)),
       ),
-      child: FutureBuilder<List<MyLotteryList>>(
-        future: fetchMyLotteryList(),
-        builder: (context, snapshot) {
-          var hasData = snapshot.hasData;
-          var data = snapshot.data;
-          var hasError = snapshot.hasError;
-          var error = snapshot.error;
-          if (hasData) {
-            return myLotteryList(data, context);
-          } else if (hasError) {
-            return Text("$error");
-          }
+      child: Column(
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.baseline,
+            textBaseline: TextBaseline.ideographic,
+            children: <Widget>[
+              Icon(
+                FontAwesome.map_o,
+                color: Color.fromRGBO(100, 92, 195, 1),
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: ScreenUtil().setSp(30)),
+                child: Icon(
+                  FontAwesome.list_ul,
+                  color: Color.fromRGBO(100, 92, 195, 1),
+                ),
+              ),
+            ],
+          ),
+          FutureBuilder<List<MyLotteryList>>(
+            future: fetchMyLotteryList(),
+            builder: (context, snapshot) {
+              var hasData = snapshot.hasData;
+              var data = snapshot.data;
+              var hasError = snapshot.hasError;
+              var error = snapshot.error;
+              if (hasData) {
+                return myLotteryList(data, context);
+              } else if (hasError) {
+                return Text("$error");
+              }
 
-          return Center(child: CircularProgressIndicator());
-        },
+              return Center(child: CircularProgressIndicator());
+            },
+          ),
+        ],
       ),
     );
   }
@@ -43,6 +68,7 @@ class _LotteryListState extends State<LotteryList> {
   Widget myLotteryList(List<MyLotteryList> myLotteryList, context) {
     return Container(
       width: ScreenUtil().setWidth(500),
+      height: ScreenUtil().setHeight(550),
       child: ListView.builder(
           itemCount: myLotteryList.length,
           itemBuilder: (context, index) {
@@ -75,17 +101,29 @@ class _LotteryListState extends State<LotteryList> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           LotteryItem(
-                              active: false, lotteryNumber: lottery.num1),
+                              active: false,
+                              backgroundColor: Color.fromRGBO(100, 92, 195, 1),
+                              lotteryNumber: lottery.num1),
                           LotteryItem(
-                              active: false, lotteryNumber: lottery.num2),
+                              active: false,
+                              backgroundColor: Color.fromRGBO(100, 92, 195, 1),
+                              lotteryNumber: lottery.num2),
                           LotteryItem(
-                              active: false, lotteryNumber: lottery.num3),
+                              active: false,
+                              backgroundColor: Color.fromRGBO(100, 92, 195, 1),
+                              lotteryNumber: lottery.num3),
                           LotteryItem(
-                              active: false, lotteryNumber: lottery.num4),
+                              active: false,
+                              backgroundColor: Color.fromRGBO(100, 92, 195, 1),
+                              lotteryNumber: lottery.num4),
                           LotteryItem(
-                              active: false, lotteryNumber: lottery.num5),
+                              active: false,
+                              backgroundColor: Color.fromRGBO(100, 92, 195, 1),
+                              lotteryNumber: lottery.num5),
                           LotteryItem(
-                              active: false, lotteryNumber: lottery.num6),
+                              active: false,
+                              backgroundColor: Color.fromRGBO(100, 92, 195, 1),
+                              lotteryNumber: lottery.num6),
                           Container(
                             width: ScreenUtil().setWidth(40),
                             height: ScreenUtil().setHeight(85),
@@ -95,7 +133,9 @@ class _LotteryListState extends State<LotteryList> {
                             ),
                           ),
                           LotteryItem(
-                              active: false, lotteryNumber: lottery.bnusNum),
+                              active: false,
+                              backgroundColor: Color.fromRGBO(100, 92, 195, 1),
+                              lotteryNumber: lottery.bnusNum),
                         ],
                       ),
                     )

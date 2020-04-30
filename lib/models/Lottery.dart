@@ -18,13 +18,11 @@ class LotteryResultModel {
 
 @JsonSerializable()
 class Lottery {
-  final LotteryResultModel lottoResult; //  json 결과값 (success 또는 fail)
+  final List<LotteryResultModel> lottoResult; //  json 결과값 (success 또는 fail)
   final int totalSellingPrice; //  누적 상금
   final int drawNo; //  로또회차
   final String drawDate; //  로또당첨일시
-  final int firstWinamnt; //  1등 당첨금
-  final int firstPrzwnerCo; //  1등 당첨 인원
-  final int firstAccumamnt; //  1등 당첨금 총액
+  final String drawDateYn; //  로또당첨일시 맞는지 아닌지
   final int num1; //  로또번호1
   final int num2; //  로또번호2
   final int num3; //  로또번호3
@@ -38,16 +36,14 @@ class Lottery {
       this.totalSellingPrice,
       this.drawNo,
       this.drawDate,
-      this.firstWinamnt,
-      this.firstPrzwnerCo,
-      this.firstAccumamnt,
       this.num1,
       this.num2,
       this.num3,
       this.num4,
       this.num5,
       this.num6,
-      this.bonusNum);
+      this.bonusNum,
+      this.drawDateYn);
 
   factory Lottery.fromJson(Map<String, dynamic> json) =>
       _$LotteryFromJson(json);
