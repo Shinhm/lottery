@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottery/components/home/lottery.dart';
 import 'package:lottery/components/home/lotteryList.dart';
-import 'package:lottery/models/Lottery.dart';
+import 'package:lottery/models/Lottery.model.dart';
 import 'package:lottery/services/lotteryService.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -32,6 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final date2 = DateTime.now();
     final difference = date2.difference(birthday).inDays;
     final drwNo = (difference ~/ 7) + 1;
+    print(drwNo);
     lotteryNo = drwNo;
     lottery = fetchLottery(drwNo);
   }
@@ -39,7 +40,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromRGBO(68, 59, 201, 1),
       body: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
         ScreenUtil.init(context, width: 550, height: 1334);
@@ -59,7 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
             Container(
               width: ScreenUtil().setWidth(550),
               height: ScreenUtil().setHeight(700),
-              child: LotteryList(),
+              child: LotteryList(drwNo: lotteryNo),
             )
           ],
         );

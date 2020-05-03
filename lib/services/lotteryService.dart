@@ -1,7 +1,8 @@
 import 'dart:convert';
-import 'package:lottery/models/Lottery.dart';
+import 'package:lottery/models/Lottery.model.dart';
 import 'package:http/http.dart' as http;
-import 'package:lottery/models/MyLotteryList.dart';
+import 'package:lottery/models/LotteryPlace.model.dart';
+import 'package:lottery/models/MyLotteryList.model.dart';
 
 const host = 'https://www.geniecontents.com';
 
@@ -11,7 +12,17 @@ Future<Lottery> fetchLottery(drwNo) async {
   if (responseBody['statusCode'] == '200') {
     return Lottery.fromJson(responseBody['body']);
   } else {
-    throw Exception('로또정보가 없는데염');
+    throw Exception('로또 정보가 없는데염');
+  }
+}
+
+Future<LotteryPlaceModel> fetchLotteryWinningPlace(drwNo) async {
+  final response = await http.get("$host/api/v1/lotto/winning/places?drawNo=$drwNo");
+  var responseBody = json.decode(response.body);
+  if (responseBody['statusCode'] == '200') {
+    return LotteryPlaceModel.fromJson(responseBody['body']);
+  } else {
+    throw Exception('로또 매장 정보가 없는데염');
   }
 }
 

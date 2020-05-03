@@ -1,4 +1,4 @@
-package com.example.lottery
+package com.hyunmin.lottery
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity

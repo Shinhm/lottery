@@ -4,9 +4,9 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottery/components/_common/lotteryItem.dart';
 import 'package:lottery/helper/numberFormatHelper.dart';
-import 'package:lottery/models/Lottery.dart';
-import 'package:lottery/models/MyLotteryList.dart';
-import 'package:lottery/models/MyLotteryNumbers.dart';
+import 'package:lottery/models/Lottery.model.dart';
+import 'package:lottery/models/MyLotteryList.model.dart';
+import 'package:lottery/models/MyLotteryNumbers.model.dart';
 
 class LotteryResult extends StatelessWidget {
   final Future<Lottery> lottery;

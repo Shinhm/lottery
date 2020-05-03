@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottery/components/myLottery/lotteryResult.dart';
-import 'package:lottery/models/Lottery.dart';
-import 'package:lottery/models/MyLotteryList.dart';
+import 'package:lottery/models/Lottery.model.dart';
+import 'package:lottery/models/MyLotteryList.model.dart';
 import 'package:lottery/services/lotteryService.dart';
 
 class LotteryScreen extends StatefulWidget {
@@ -33,10 +33,8 @@ class _LotteryScreenState extends State<LotteryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromRGBO(68, 59, 201, 1),
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Color.fromRGBO(68, 59, 201, 1),
       ),
       body: SafeArea(
         child: LayoutBuilder(

@@ -1,7 +1,7 @@
-import 'MyLotteryNumbers.dart';
+import 'MyLotteryNumbers.model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'MyLotteryList.g.dart';
+part 'MyLotteryList.model.g.dart';
 
 @JsonSerializable()
 class MyLotteryList {

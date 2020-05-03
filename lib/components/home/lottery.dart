@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../models/Lottery.dart';
+import '../../models/Lottery.model.dart';
 
 class LotteryComponent extends StatelessWidget {
   final Future<Lottery> lottery;

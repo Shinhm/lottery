@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'MyLotteryNumbers.dart';
+part of 'MyLotteryNumbers.model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator

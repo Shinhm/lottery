@@ -2,11 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottery/components/_common/lotteryItem.dart';
-import 'package:lottery/models/MyLotteryList.dart';
+import 'package:lottery/models/MyLotteryList.model.dart';
 import 'package:lottery/screens/LotteryScreen.dart';
+import 'package:lottery/screens/MapScreen.dart';
 import 'package:lottery/services/lotteryService.dart';
 
 class LotteryList extends StatefulWidget {
+  final int drwNo;
+
+  LotteryList({Key key, @required this.drwNo}) : super(key: key);
+
   @override
   _LotteryListState createState() => _LotteryListState();
 }
@@ -31,9 +36,17 @@ class _LotteryListState extends State<LotteryList> {
             crossAxisAlignment: CrossAxisAlignment.baseline,
             textBaseline: TextBaseline.ideographic,
             children: <Widget>[
-              Icon(
-                FontAwesome.map_o,
-                color: Color.fromRGBO(100, 92, 195, 1),
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => MapScreen(drwNo: widget.drwNo,)));
+                },
+                child: Icon(
+                  FontAwesome.map_o,
+                  color: Color.fromRGBO(100, 92, 195, 1),
+                ),
               ),
               Padding(
                 padding: EdgeInsets.only(left: ScreenUtil().setSp(30)),
