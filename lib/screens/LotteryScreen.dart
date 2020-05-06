@@ -15,7 +15,7 @@ class LotteryScreen extends StatefulWidget {
 }
 
 class _LotteryScreenState extends State<LotteryScreen> {
-  Future<List<MyLotteryList>> myLotteryList;
+  Future<List<MyLotteryListModel>> myLotteryList;
   Future<Lottery> lottery;
 
   @override

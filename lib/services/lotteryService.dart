@@ -3,6 +3,8 @@ import 'package:lottery/models/Lottery.model.dart';
 import 'package:http/http.dart' as http;
 import 'package:lottery/models/LotteryPlace.model.dart';
 import 'package:lottery/models/MyLotteryList.model.dart';
+import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
 
 const host = 'https://www.geniecontents.com';
 
@@ -17,7 +19,8 @@ Future<Lottery> fetchLottery(drwNo) async {
 }
 
 Future<LotteryPlaceModel> fetchLotteryWinningPlace(drwNo) async {
-  final response = await http.get("$host/api/v1/lotto/winning/places?drawNo=$drwNo");
+  final response = await http.get(
+      "$host/api/v1/lotto/winning/places?drawNo=$drwNo");
   var responseBody = json.decode(response.body);
   if (responseBody['statusCode'] == '200') {
     return LotteryPlaceModel.fromJson(responseBody['body']);
@@ -26,112 +29,62 @@ Future<LotteryPlaceModel> fetchLotteryWinningPlace(drwNo) async {
   }
 }
 
-List<MyLotteryList> parseMyLotteryList(String responseBody) {
+List<MyLotteryListModel> parseMyLotteryList(String responseBody) {
   final parsed = json.decode(responseBody).cast<Map<String, dynamic>>();
   return parsed
-      .map<MyLotteryList>((json) => MyLotteryList.fromJson(json))
+      .map<MyLotteryListModel>((json) => MyLotteryListModel.fromJson(json))
       .toList();
 }
 
-Future<List<MyLotteryList>> fetchMyLottery(int drwNo) async {
-  var responseBody;
-  if (drwNo == 908) {
-    responseBody = [
-      {
-        "id": 100,
-        "totalAmount": 100,
-        "drwNo": 908,
-        "lotteryNumbers": {
-          "num1": 3,
-          "num2": 16,
-          "num3": 21,
-          "num4": 22,
-          "num5": 23,
-          "num6": 44,
-          "bnusNum": 27
-        }
-      },
-      {
-        "id": 100,
-        "totalAmount": 100,
-        "drwNo": 908,
-        "lotteryNumbers": {
-          "num1": 2,
-          "num2": 10,
-          "num3": 13,
-          "num4": 27,
-          "num5": 23,
-          "num6": 44,
-          "bnusNum": 40
-        }
-      }
-    ];
-  } else {
-    responseBody = [
-      {
-        "id": 100,
-        "totalAmount": 100,
-        "drwNo": 908,
-        "lotteryNumbers": {
-          "num1": 3,
-          "num2": 16,
-          "num3": 21,
-          "num4": 22,
-          "num5": 23,
-          "num6": 44,
-          "bnusNum": 27
-        }
-      }
-    ];
-  }
-  return parseMyLotteryList(jsonEncode(responseBody));
+Future<List<MyLotteryListModel>> fetchMyLottery(int drwNo) async {
+  final database = openDatabase(
+    join(await getDatabasesPath(), 'lottery.db'),
+    onCreate: (db, version) {
+      return db.execute(
+        "CREATE TABLE my_lottery_list(id INTEGER PRIMARY KEY, drwNo INTEGER, num1 INTEGER, num2 INTEGER, num3 INTEGER, num4 INTEGER, num5 INTEGER, num6 INTEGER)",
+      );
+    },
+    version: 1,
+  );
+  final Database db = await database;
+  final List<Map<String, dynamic>> maps = await db.rawQuery('select * from my_lottery_list where drwNo = $drwNo order by drwNo desc');
+  return parseMyLotteryList(jsonEncode(maps));
 }
 
-Future<List<MyLotteryList>> fetchMyLotteryList() async {
-  var jsonData = [
-    {
-      "id": 100,
-      "totalAmount": 100,
-      "drwNo": 908,
-      "lotteryNumbers": {
-        "num1": 3,
-        "num2": 16,
-        "num3": 21,
-        "num4": 22,
-        "num5": 23,
-        "num6": 44,
-        "bnusNum": 30
-      }
+Future<List<MyLotteryListModel>> fetchMyLotteryList() async {
+  final database = openDatabase(
+    join(await getDatabasesPath(), 'lottery.db'),
+    onCreate: (db, version) {
+      return db.execute(
+        "CREATE TABLE my_lottery_list(id INTEGER PRIMARY KEY, drwNo INTEGER, num1 INTEGER, num2 INTEGER, num3 INTEGER, num4 INTEGER, num5 INTEGER, num6 INTEGER)",
+      );
     },
-    {
-      "id": 100,
-      "totalAmount": 100,
-      "drwNo": 908,
-      "lotteryNumbers": {
-        "num1": 3,
-        "num2": 16,
-        "num3": 21,
-        "num4": 22,
-        "num5": 23,
-        "num6": 44,
-        "bnusNum": 30
-      }
-    },
-    {
-      "id": 100,
-      "totalAmount": 100,
-      "drwNo": 100,
-      "lotteryNumbers": {
-        "num1": 3,
-        "num2": 16,
-        "num3": 21,
-        "num4": 22,
-        "num5": 23,
-        "num6": 44,
-        "bnusNum": 30
-      }
-    }
-  ];
+    version: 1,
+  );
+  final Database db = await database;
+  final List<Map<String, dynamic>> maps = await db.rawQuery('select * from my_lottery_list order by drwNo desc');
+  return parseMyLotteryList(jsonEncode(maps));
+}
 
-  return parseMyLotteryList(jsonEncode(jsonData));
+Future<void> addLotteryNumbers(MyLotteryListModel myLotteryListModel) async {
+  final database = openDatabase(
+    join(await getDatabasesPath(), 'lottery.db'),
+    onCreate: (db, version) {
+      return db.execute(
+        "CREATE TABLE my_lottery_list(id INTEGER PRIMARY KEY, drwNo INTEGER, num1 INTEGER, num2 INTEGER, num3 INTEGER, num4 INTEGER, num5 INTEGER, num6 INTEGER)",
+      );
+    },
+    version: 1,
+  );
+  // 데이터베이스 reference를 얻습니다.
+  final Database db = await database;
+
+  // Dog를 올바른 테이블에 추가하세요. 또한
+  // `conflictAlgorithm`을 명시할 것입니다. 본 예제에서는
+  // 만약 동일한 dog가 여러번 추가되면, 이전 데이터를 덮어쓸 것입니다.
+  await db.insert(
+    'my_lottery_list',
+    myLotteryListModel.toJson(),
+    conflictAlgorithm: ConflictAlgorithm.replace,
+  );
 }

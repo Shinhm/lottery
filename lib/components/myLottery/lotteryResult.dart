@@ -10,13 +10,13 @@ import 'package:lottery/models/MyLotteryNumbers.model.dart';
 
 class LotteryResult extends StatelessWidget {
   final Future<Lottery> lottery;
-  final Future<List<MyLotteryList>> myLotteryList;
+  final Future<List<MyLotteryListModel>> myLotteryList;
 
   const LotteryResult(
       {Key key, @required this.lottery, @required this.myLotteryList})
       : super(key: key);
 
-  int lotteryRank(Lottery winnerNumber, LotteryNumbers checkNumber) {
+  int lotteryRank(Lottery winnerNumber, MyLotteryListModel checkNumber) {
     List<bool> returnBool = new List.filled(6, false);
 
     if (winnerNumber.num1 == checkNumber.num1) {
@@ -42,9 +42,6 @@ class LotteryResult extends StatelessWidget {
         returnBool.where((bool) => bool).toList().length;
     if (lotteryActiveNumberLength == 6) return 1;
     if (lotteryActiveNumberLength == 5) {
-      if (winnerNumber.bonusNum == checkNumber.bnusNum) {
-        return 2;
-      }
       return 3;
     }
     if (lotteryActiveNumberLength == 4) return 4;
@@ -70,7 +67,7 @@ class LotteryResult extends StatelessWidget {
           future: myLotteryList,
           builder: (context, snapshot) {
             var hasData = snapshot.hasData;
-            List<MyLotteryList> data = snapshot.data;
+            List<MyLotteryListModel> data = snapshot.data;
             var hasError = snapshot.hasError;
             var error = snapshot.error;
 
@@ -90,7 +87,7 @@ class LotteryResult extends StatelessWidget {
                   ),
                   itemCount: data.length,
                   itemBuilder: (BuildContext context, int itemIndex) {
-                    var myLottery = data[itemIndex].lotteryNumbers;
+                    var myLottery = data[itemIndex];
                     int rank = lotteryRank(lotteryNo, myLottery);
                     List<LotteryResultModel> lottoResult = lotteryNo.lottoResult;
                     LotteryResultModel rankInfo =
@@ -103,7 +100,7 @@ class LotteryResult extends StatelessWidget {
                           borderRadius: BorderRadius.circular(20),
                           color: Color.fromRGBO(62, 52, 181, 1)),
                       child: Container(
-                          padding: EdgeInsets.all(15),
+                          padding: EdgeInsets.all(9),
                           child: Center(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -170,13 +167,6 @@ class LotteryResult extends StatelessWidget {
                                           ),
                                         ),
                                         padding: EdgeInsets.all(8),
-                                      ),
-                                      LotteryItem(
-                                        active: lotteryNo.bonusNum ==
-                                            myLottery.bnusNum,
-                                        lotteryNumber: myLottery.bnusNum,
-                                        backgroundColor:
-                                            Color.fromRGBO(100, 92, 195, 1),
                                       ),
                                     ],
                                   ),

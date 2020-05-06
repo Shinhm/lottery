@@ -19,11 +19,13 @@ class MapScreen extends StatefulWidget {
 
 class _MapScreenState extends State<MapScreen> {
   final Completer<GoogleMapController> _controller = Completer();
+  final CarouselController _carouselController = CarouselController();
   Future<LotteryPlaceModel> lotteryPlace;
   String dropdownValue;
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
   MarkerId selectedMarker;
   int _markerIdCounter = 1;
+  int _initialCarouselIndex = 0;
 
   CameraPosition firstCameraSetting(lat, lng) => CameraPosition(
         target: LatLng(lat, lng),
@@ -101,17 +103,20 @@ class _MapScreenState extends State<MapScreen> {
                                     setState(() {
                                       _markerIdCounter = 1;
                                       lotteryPlace = fetchLotteryWinningPlace(
-                                          value.split(" ")[0]);
-                                      lotteryPlace.then((place) {
+                                              value.split(" ")[0])
+                                          .then((place) {
+                                        markers.clear();
                                         var _winningPlaces =
                                             place.winningPlaces;
-                                        _goToPlace(_winningPlaces[0].lat,
-                                            _winningPlaces[0].lng);
                                         for (final winningPlace
                                             in _winningPlaces) {
                                           _addMaker(winningPlace.lat,
                                               winningPlace.lng);
                                         }
+                                        _carouselController.jumpToPage(0);
+                                        _goToPlace(_winningPlaces[0].lat,
+                                            _winningPlaces[0].lng);
+                                        return place;
                                       });
                                       dropdownValue = value;
                                     });
@@ -154,12 +159,13 @@ class _MapScreenState extends State<MapScreen> {
                     ),
                     Container(
                       child: CarouselSlider.builder(
+                        carouselController: _carouselController,
                         options: CarouselOptions(
                             height: ScreenUtil().setHeight(190),
                             autoPlay: false,
                             enlargeCenterPage: true,
-                            enableInfiniteScroll: true,
-                            initialPage: 1,
+                            enableInfiniteScroll: false,
+                            initialPage: 0,
                             onPageChanged: (index, reason) {
                               LotteryWinningPlaceModel lwpm =
                                   winningPlaces[index];

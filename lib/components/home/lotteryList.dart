@@ -41,7 +41,9 @@ class _LotteryListState extends State<LotteryList> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => MapScreen(drwNo: widget.drwNo,)));
+                          builder: (context) => MapScreen(
+                                drwNo: widget.drwNo,
+                              )));
                 },
                 child: Icon(
                   FontAwesome.map_o,
@@ -57,7 +59,7 @@ class _LotteryListState extends State<LotteryList> {
               ),
             ],
           ),
-          FutureBuilder<List<MyLotteryList>>(
+          FutureBuilder<List<MyLotteryListModel>>(
             future: fetchMyLotteryList(),
             builder: (context, snapshot) {
               var hasData = snapshot.hasData;
@@ -78,14 +80,14 @@ class _LotteryListState extends State<LotteryList> {
     );
   }
 
-  Widget myLotteryList(List<MyLotteryList> myLotteryList, context) {
+  Widget myLotteryList(List<MyLotteryListModel> myLotteryList, context) {
     return Container(
       width: ScreenUtil().setWidth(500),
       height: ScreenUtil().setHeight(550),
       child: ListView.builder(
           itemCount: myLotteryList.length,
           itemBuilder: (context, index) {
-            var lottery = myLotteryList[index].lotteryNumbers;
+            var lottery = myLotteryList[index];
             return Padding(
               padding: EdgeInsets.only(bottom: ScreenUtil().setSp(20)),
               child: InkWell(
@@ -100,15 +102,18 @@ class _LotteryListState extends State<LotteryList> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
-                    Container(
-                      child: Text(
-                        "${myLotteryList[index].drwNo}회차",
-                        style: TextStyle(
-                            color: Color.fromRGBO(160, 152, 217, 1),
-                            fontSize: ScreenUtil().setSp(23),
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
+                    (index == 0 ||
+                            lottery.drwNo != myLotteryList[index - 1].drwNo)
+                        ? Container(
+                            child: Text(
+                              "${myLotteryList[index].drwNo}회차",
+                              style: TextStyle(
+                                  color: Color.fromRGBO(160, 152, 217, 1),
+                                  fontSize: ScreenUtil().setSp(23),
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          )
+                        : null,
                     Container(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -137,22 +142,10 @@ class _LotteryListState extends State<LotteryList> {
                               active: false,
                               backgroundColor: Color.fromRGBO(100, 92, 195, 1),
                               lotteryNumber: lottery.num6),
-                          Container(
-                            width: ScreenUtil().setWidth(40),
-                            height: ScreenUtil().setHeight(85),
-                            child: Icon(
-                              Icons.add,
-                              color: Color.fromRGBO(78, 80, 135, 1),
-                            ),
-                          ),
-                          LotteryItem(
-                              active: false,
-                              backgroundColor: Color.fromRGBO(100, 92, 195, 1),
-                              lotteryNumber: lottery.bnusNum),
                         ],
                       ),
                     )
-                  ],
+                  ].where((Object o) => o != null).toList(),
                 ),
               ),
             );
