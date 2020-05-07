@@ -40,17 +40,18 @@ class LotteryItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: ScreenUtil().setWidth(55),
-      height: ScreenUtil().setHeight(85),
+      width: ScreenUtil().setSp(30),
+      height: ScreenUtil().setSp(30),
       child: Center(
         child: Text(
           "$lotteryNumber",
           style: TextStyle(
+            fontFamily: 'SpoqaHanSans',
               color: active
                   ? Color.fromRGBO(68, 59, 201, 1)
-                  : Color.fromRGBO(255, 255, 255, 1),
-              fontWeight: FontWeight.bold,
-              fontSize: ScreenUtil().setSp(25)),
+                  : Color.fromRGBO(31, 26, 29, 1),
+              fontWeight: FontWeight.normal,
+              fontSize: ScreenUtil().setSp(18)),
         ),
       ),
       decoration: BoxDecoration(
@@ -59,8 +60,7 @@ class LotteryItem extends StatelessWidget {
               : backgroundColor != null
                   ? backgroundColor
                   : Color.fromRGBO(244, 245, 252, 1),
-          borderRadius: BorderRadius.circular(15)),
-      padding: EdgeInsets.all(8),
+          borderRadius: BorderRadius.circular(ScreenUtil().setSp(30))),
     );
   }
 }

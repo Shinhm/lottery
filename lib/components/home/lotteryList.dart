@@ -1,3 +1,6 @@
+import 'dart:ui';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -19,47 +22,30 @@ class LotteryList extends StatefulWidget {
 class _LotteryListState extends State<LotteryList> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.only(
-          right: ScreenUtil().setSp(40),
-          left: ScreenUtil().setSp(40),
-          top: ScreenUtil().setSp(20)),
-      decoration: BoxDecoration(
-        color: Color.fromRGBO(255, 255, 255, 1),
-        borderRadius: BorderRadius.only(
-            topRight: Radius.circular(40), topLeft: Radius.circular(40)),
-      ),
-      child: Column(
-        children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.baseline,
-            textBaseline: TextBaseline.ideographic,
-            children: <Widget>[
-              InkWell(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => MapScreen(
-                                drwNo: widget.drwNo,
-                              )));
-                },
-                child: Icon(
-                  FontAwesome.map_o,
-                  color: Color.fromRGBO(100, 92, 195, 1),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: ScreenUtil().setSp(30)),
-                child: Icon(
-                  FontAwesome.list_ul,
-                  color: Color.fromRGBO(100, 92, 195, 1),
-                ),
-              ),
-            ],
+    return Column(
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.only(
+              top: ScreenUtil().setSp(13), bottom: ScreenUtil().setSp(13)),
+          child: Divider(
+            color: Color.fromRGBO(31, 26, 29, 1),
+            thickness: ScreenUtil().setSp(3),
           ),
-          FutureBuilder<List<MyLotteryListModel>>(
+        ),
+        Container(
+          padding: EdgeInsets.only(bottom: ScreenUtil().setSp(10)),
+          child: Text(
+            '내 번호',
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontFamily: 'SpoqaHanSans',
+                fontSize: ScreenUtil().setSp(24)),
+          ),
+        ),
+        Container(
+          width: ScreenUtil().setWidth(375),
+          height: ScreenUtil().setHeight(235),
+          child: FutureBuilder<List<MyLotteryListModel>>(
             future: fetchMyLotteryList(),
             builder: (context, snapshot) {
               var hasData = snapshot.hasData;
@@ -71,86 +57,131 @@ class _LotteryListState extends State<LotteryList> {
               } else if (hasError) {
                 return Text("$error");
               }
-
               return Center(child: CircularProgressIndicator());
             },
           ),
-        ],
-      ),
+        ),
+        Stack(
+          children: <Widget>[
+            Container(
+              width: ScreenUtil().setWidth(375),
+              height: ScreenUtil().setHeight(70),
+            ),
+            Positioned(
+              bottom: 0,
+              child: Container(
+                width: ScreenUtil().setWidth(375),
+                height: ScreenUtil().setHeight(60),
+                child: Divider(
+                  color: Color.fromRGBO(31, 26, 29, 1),
+                  thickness: ScreenUtil().setSp(3),
+                ),
+              ),
+            ),
+            Positioned(
+              bottom: 0,
+              child: Padding(
+                padding: EdgeInsets.only(left: ScreenUtil().setSp(100)),
+                child: Container(
+                  width: ScreenUtil().setSp(56),
+                  height: ScreenUtil().setSp(56),
+                  decoration: BoxDecoration(
+                      color: Color.fromRGBO(31, 26, 29, 1),
+                      borderRadius:
+                      BorderRadius.circular(ScreenUtil().setSp(56))),
+                  child: Icon(
+                    FontAwesome.plus,
+                    color: Color.fromRGBO(238, 69, 82, 1),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 
   Widget myLotteryList(List<MyLotteryListModel> myLotteryList, context) {
-    return Container(
-      width: ScreenUtil().setWidth(500),
-      height: ScreenUtil().setHeight(550),
-      child: ListView.builder(
-          itemCount: myLotteryList.length,
-          itemBuilder: (context, index) {
-            var lottery = myLotteryList[index];
-            return Padding(
-              padding: EdgeInsets.only(bottom: ScreenUtil().setSp(20)),
-              child: InkWell(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => LotteryScreen(
-                              drwNo: myLotteryList[index].drwNo)));
-                },
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
+    return ListView.builder(
+        itemCount: myLotteryList.length,
+        itemBuilder: (context, index) {
+          var lottery = myLotteryList[index];
+          return InkWell(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          LotteryScreen(drwNo: myLotteryList[index].drwNo)));
+            },
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    (index == 0 ||
-                            lottery.drwNo != myLotteryList[index - 1].drwNo)
-                        ? Container(
-                            child: Text(
-                              "${myLotteryList[index].drwNo}회차",
-                              style: TextStyle(
-                                  color: Color.fromRGBO(160, 152, 217, 1),
-                                  fontSize: ScreenUtil().setSp(23),
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          )
-                        : null,
+                    Container(
+                      child: Text(
+                        "${myLotteryList[index].drwNo}회",
+                        style: TextStyle(
+                            color: Color.fromRGBO(121, 116, 121, 1),
+                            fontSize: ScreenUtil().setSp(14),
+                            fontFamily: 'SpoqaHanSans',
+                            fontWeight: FontWeight.normal),
+                      ),
+                    ),
                     Container(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
                           LotteryItem(
                               active: false,
-                              backgroundColor: Color.fromRGBO(100, 92, 195, 1),
+                              backgroundColor: Color.fromRGBO(219, 218, 216, 1),
                               lotteryNumber: lottery.num1),
                           LotteryItem(
                               active: false,
-                              backgroundColor: Color.fromRGBO(100, 92, 195, 1),
+                              backgroundColor: Color.fromRGBO(219, 218, 216, 1),
                               lotteryNumber: lottery.num2),
                           LotteryItem(
                               active: false,
-                              backgroundColor: Color.fromRGBO(100, 92, 195, 1),
+                              backgroundColor: Color.fromRGBO(219, 218, 216, 1),
                               lotteryNumber: lottery.num3),
                           LotteryItem(
                               active: false,
-                              backgroundColor: Color.fromRGBO(100, 92, 195, 1),
+                              backgroundColor: Color.fromRGBO(219, 218, 216, 1),
                               lotteryNumber: lottery.num4),
                           LotteryItem(
                               active: false,
-                              backgroundColor: Color.fromRGBO(100, 92, 195, 1),
+                              backgroundColor: Color.fromRGBO(219, 218, 216, 1),
                               lotteryNumber: lottery.num5),
                           LotteryItem(
                               active: false,
-                              backgroundColor: Color.fromRGBO(100, 92, 195, 1),
+                              backgroundColor: Color.fromRGBO(219, 218, 216, 1),
                               lotteryNumber: lottery.num6),
                         ],
                       ),
+                    ),
+                    Container(
+                      child: Icon(FontAwesome.angle_right),
                     )
-                  ].where((Object o) => o != null).toList(),
+                  ],
                 ),
-              ),
-            );
-          }),
-    );
+                Padding(
+                  padding: EdgeInsets.only(
+                      top: ScreenUtil().setSp(10),
+                      bottom: ScreenUtil().setSp(11)),
+                  child: Divider(
+                    thickness: ScreenUtil().setSp(1),
+                    color: Color.fromRGBO(219, 218, 216, 1),
+                  ),
+                )
+              ],
+            ),
+          );
+        });
   }
 }
 

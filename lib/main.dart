@@ -26,6 +26,7 @@ class Dog {
     return 'Dog{id: $id, name: $name, age: $age}';
   }
 }
+
 class MyApp extends StatefulWidget {
   @override
   _MyAppState createState() => _MyAppState();
@@ -152,18 +153,20 @@ class _MyAppState extends State<MyApp> {
       title: 'lottery-app',
       home: HomeScreen(),
       theme: ThemeData(
-        primaryColor: Color.fromRGBO(68, 59, 201, 1),
+        primaryColor: Color.fromRGBO(236, 234, 234, 1),
         accentColor: Colors.cyan[600],
-        scaffoldBackgroundColor: Color.fromRGBO(68, 59, 201, 1),
+        scaffoldBackgroundColor: Color.fromRGBO(236, 234, 234, 1),
         // Define the default font family.
-        fontFamily: 'Georgia',
-
+        fontFamily: 'SpoqaHanSans',
         // Define the default TextTheme. Use this to specify the default
         // text styling for headlines, titles, bodies of text, and more.
         textTheme: TextTheme(
           headline: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
           title: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
-          body1: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
+          body1: TextStyle(
+              fontSize: 14.0,
+              fontFamily: 'Hind',
+              color: Color.fromRGBO(31, 26, 29, 1)),
         ),
       ),
       darkTheme: ThemeData(

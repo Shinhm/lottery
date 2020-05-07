@@ -1,3 +1,4 @@
+
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -59,19 +60,6 @@ class _HomeScreenState extends State<HomeScreen> {
         numbers.clear();
       }
     }).toList();
-//    print(document.getElementsByClassName('clr')[0].children.first.text);
-
-//    final _possibleFormats = BarcodeFormat.values.toList()
-//      ..removeWhere((e) => e == BarcodeFormat.unknown);
-//
-//    List<BarcodeFormat> selectedFormats = [..._possibleFormats];
-//
-//
-//    print(result.type); // The result type (barcode, cancelled, failed)
-//    print(result.rawContent); // The barcode content
-//    print(result.format); // The barcode format (as enum)
-//    print(result
-//        .formatNote); // If a unknown format was scanned this field contains a note
   }
 
   Future<Lottery> lottery;
@@ -96,41 +84,38 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: LayoutBuilder(
-          builder: (BuildContext context, BoxConstraints constraints) {
-        ScreenUtil.init(context, width: 550, height: 1334);
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Container(
-              width: ScreenUtil().setWidth(550),
-              height: ScreenUtil().setHeight(634),
-              child: Center(
-                  child: Container(
-                      child: LotteryComponent(
-                lottery: lottery,
-                lotteryNo: lotteryNo,
-              ))),
+      body: SafeArea(
+        child: LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints constraints) {
+          ScreenUtil.init(context, width: 375, height: 612);
+          return Padding(
+            padding: EdgeInsets.only(
+                top: ScreenUtil().setSp(18),
+                bottom: ScreenUtil().setSp(20),
+                right: ScreenUtil().setSp(24),
+                left: ScreenUtil().setSp(24)),
+            child: Column(
+              children: <Widget>[
+                Container(
+                  width: ScreenUtil().setWidth(375),
+                  height: ScreenUtil().setHeight(151),
+                  child: Center(
+                      child: Container(
+                          child: LotteryComponent(
+                    lottery: lottery,
+                    lotteryNo: lotteryNo,
+                  ))),
+                ),
+                Container(
+                  width: ScreenUtil().setWidth(375),
+                  height: ScreenUtil().setHeight(397),
+                  child: LotteryList(drwNo: lotteryNo),
+                )
+              ],
             ),
-            Container(
-              width: ScreenUtil().setWidth(550),
-              height: ScreenUtil().setHeight(700),
-              child: LotteryList(drwNo: lotteryNo),
-            )
-          ],
-        );
-      }),
-      floatingActionButton: FloatingActionButton.extended(
-        label: Text(
-          'QR 스캔',
-        ),
-        icon: Icon(Icons.filter_center_focus),
-        backgroundColor: Color.fromRGBO(62, 52, 181, 1),
-        onPressed: () {
-          main();
-        },
+          );
+        }),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
