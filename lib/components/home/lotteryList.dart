@@ -12,8 +12,9 @@ import 'package:lottery/services/lotteryService.dart';
 
 class LotteryList extends StatefulWidget {
   final int drwNo;
+  VoidCallback callBarcodeScanner;
 
-  LotteryList({Key key, @required this.drwNo}) : super(key: key);
+  LotteryList({Key key, @required this.drwNo, this.callBarcodeScanner}) : super(key: key);
 
   @override
   _LotteryListState createState() => _LotteryListState();
@@ -82,16 +83,19 @@ class _LotteryListState extends State<LotteryList> {
               bottom: 0,
               child: Padding(
                 padding: EdgeInsets.only(left: ScreenUtil().setSp(100)),
-                child: Container(
-                  width: ScreenUtil().setSp(56),
-                  height: ScreenUtil().setSp(56),
-                  decoration: BoxDecoration(
-                      color: Color.fromRGBO(31, 26, 29, 1),
-                      borderRadius:
-                      BorderRadius.circular(ScreenUtil().setSp(56))),
-                  child: Icon(
-                    FontAwesome.plus,
-                    color: Color.fromRGBO(238, 69, 82, 1),
+                child: InkWell(
+                  onTap: () => widget.callBarcodeScanner(),
+                  child: Container(
+                    width: ScreenUtil().setSp(56),
+                    height: ScreenUtil().setSp(56),
+                    decoration: BoxDecoration(
+                        color: Color.fromRGBO(31, 26, 29, 1),
+                        borderRadius:
+                        BorderRadius.circular(ScreenUtil().setSp(56))),
+                    child: Icon(
+                      FontAwesome.plus,
+                      color: Color.fromRGBO(238, 69, 82, 1),
+                    ),
                   ),
                 ),
               ),

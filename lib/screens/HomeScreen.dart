@@ -109,7 +109,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Container(
                   width: ScreenUtil().setWidth(375),
                   height: ScreenUtil().setHeight(397),
-                  child: LotteryList(drwNo: lotteryNo),
+                  child: LotteryList(drwNo: lotteryNo, callBarcodeScanner: main),
                 )
               ],
             ),
