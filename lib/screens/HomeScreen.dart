@@ -26,7 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
       "cancel": "취소",
       "flash_on": "플래쉬 켜기",
       "flash_off": "플래쉬 끄기",
-    }, useCamera: 1));
+    }, useCamera: 0));
     var numbers = new List<int>();
     RegExp regExp = new RegExp(
       r"/m.dhlottery.co.kr/",
@@ -84,38 +84,33 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: LayoutBuilder(
-            builder: (BuildContext context, BoxConstraints constraints) {
-          ScreenUtil.init(context, width: 375, height: 612);
-          return Padding(
-            padding: EdgeInsets.only(
-                top: ScreenUtil().setSp(18),
-                bottom: ScreenUtil().setSp(20),
-                right: ScreenUtil().setSp(24),
-                left: ScreenUtil().setSp(24)),
-            child: Column(
-              children: <Widget>[
-                Container(
-                  width: ScreenUtil().setWidth(375),
-                  height: ScreenUtil().setHeight(151),
-                  child: Center(
-                      child: Container(
-                          child: LotteryComponent(
-                    lottery: lottery,
-                    lotteryNo: lotteryNo,
-                  ))),
-                ),
-                Container(
-                  width: ScreenUtil().setWidth(375),
-                  height: ScreenUtil().setHeight(397),
-                  child: LotteryList(drwNo: lotteryNo, callBarcodeScanner: main),
-                )
-              ],
-            ),
-          );
-        }),
-      ),
+      body: LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints constraints) {
+        ScreenUtil.init(context, width: 375, height: 812);
+        return Padding(
+          padding: EdgeInsets.only(
+              top: ScreenUtil().setHeight(32),
+              right: ScreenUtil().setWidth(24),
+              left: ScreenUtil().setWidth(24)),
+          child: Column(
+            children: <Widget>[
+              Container(
+                width: ScreenUtil().setWidth(375),
+                child: Center(
+                    child: Container(
+                        child: LotteryComponent(
+                  lottery: lottery,
+                  lotteryNo: lotteryNo,
+                ))),
+              ),
+              Container(
+                width: ScreenUtil().setWidth(375),
+                child: LotteryList(drwNo: lotteryNo, callBarcodeScanner: main),
+              )
+            ],
+          ),
+        );
+      }),
     );
   }
 }

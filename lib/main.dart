@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lottery/screens/HomeScreen.dart';
+import 'package:lottery/screens/MapScreen.dart';
+import 'package:lottery/screens/QRCodeScreen.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -151,7 +153,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return new MaterialApp(
       title: 'lottery-app',
-      home: HomeScreen(),
+      home: PageScreen(),
       theme: ThemeData(
         primaryColor: Color.fromRGBO(236, 234, 234, 1),
         accentColor: Colors.cyan[600],
@@ -169,9 +171,54 @@ class _MyAppState extends State<MyApp> {
               color: Color.fromRGBO(31, 26, 29, 1)),
         ),
       ),
-      darkTheme: ThemeData(
-        brightness: Brightness.dark,
-      ),
+    );
+  }
+}
+
+class PageScreen extends StatefulWidget {
+  @override
+  _PageScreenState createState() => _PageScreenState();
+}
+
+class _PageScreenState extends State<PageScreen> {
+  PageController _controller = PageController(
+    initialPage: 1,
+  );
+  int lotteryNo;
+
+  void jumpToHomeScreen() {
+    _controller.jumpToPage(1);
+  }
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    final birthday = DateTime(2002, 12, 07, 20, 00);
+    final date2 = DateTime.now();
+    final difference = date2.difference(birthday).inDays;
+    final drwNo = (difference ~/ 7) + 1;
+    lotteryNo = drwNo;
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return PageView(
+      controller: _controller,
+      children: [
+        MapScreen(
+          drwNo: lotteryNo,
+        ),
+        HomeScreen(),
+        QRCodeScreen(callbackJumpToHomeScreen: jumpToHomeScreen),
+      ],
     );
   }
 }

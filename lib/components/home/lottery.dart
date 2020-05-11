@@ -57,28 +57,25 @@ class LotteryComponent extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Container(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Icon(FontAwesome.bars),
-              Container(
-                width: ScreenUtil().setSp(48),
-                height: ScreenUtil().setSp(48),
-                child: Image.asset('assets/images/logo.png'),
-              )
-            ],
-          ),
+          alignment: Alignment.centerRight,
+          child: Container(
+              width: ScreenUtil().setWidth(68),
+              height: ScreenUtil().setWidth(68),
+              child: Image.asset('assets/images/logo.png')),
         ),
         Padding(
           padding: EdgeInsets.only(
-              top: ScreenUtil().setSp(10), bottom: ScreenUtil().setSp(15)),
+              top: ScreenUtil().setHeight(18),
+              bottom: ScreenUtil().setHeight(26)),
           child: Row(
             children: <Widget>[
               Container(
+                width: ScreenUtil().setWidth(156),
+                height: ScreenUtil().setHeight(36),
                 child: Text(
                   '$lotteryNo회 당첨번호',
                   style: TextStyle(
+                    letterSpacing: ScreenUtil().setWidth(-0.36),
                       fontWeight: FontWeight.bold,
                       fontFamily: 'SpoqaHanSans',
                       fontSize: ScreenUtil().setSp(24)),
@@ -96,31 +93,40 @@ class LotteryComponent extends StatelessWidget {
   }
 
   Widget matchingRound(Lottery lottery) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        lotteryNumberItem(lottery.num1),
-        lotteryNumberItem(lottery.num2),
-        lotteryNumberItem(lottery.num3),
-        lotteryNumberItem(lottery.num4),
-        lotteryNumberItem(lottery.num5),
-        lotteryNumberItem(lottery.num6),
-        Container(child: Icon(FontAwesome.plus)),
-        lotteryNumberItem(lottery.bonusNum),
-      ],
+    return Padding(
+      padding: EdgeInsets.only(
+          left: ScreenUtil().setWidth(3), right: ScreenUtil().setWidth(2)),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          lotteryNumberItem(lottery.num1),
+          lotteryNumberItem(lottery.num2),
+          lotteryNumberItem(lottery.num3),
+          lotteryNumberItem(lottery.num4),
+          lotteryNumberItem(lottery.num5),
+          lotteryNumberItem(lottery.num6),
+          Container(
+            child: Icon(
+              FontAwesome.plus,
+              size: ScreenUtil().setWidth(12),
+            ),
+          ),
+          lotteryNumberItem(lottery.bonusNum),
+        ],
+      ),
     );
   }
 
   Widget lotteryNumberItem(int num) {
     return Container(
-      width: ScreenUtil().setSp(30),
-      height: ScreenUtil().setSp(30),
+      width: ScreenUtil().setWidth(40),
+      height: ScreenUtil().setWidth(40),
       child: Center(
         child: Text(
           "$num",
           style: TextStyle(
-              color: Color.fromRGBO(68, 59, 201, 1),
+              color: Color.fromRGBO(31, 26, 29, 1),
               letterSpacing: ScreenUtil().setSp(-0.27),
               fontWeight: FontWeight.bold,
               fontFamily: 'SpoqaHanSans',
@@ -129,7 +135,7 @@ class LotteryComponent extends StatelessWidget {
       ),
       decoration: BoxDecoration(
         color: colorMaker(num),
-        borderRadius: BorderRadius.circular(40),
+        borderRadius: BorderRadius.circular(ScreenUtil().setWidth(40)),
       ),
     );
   }

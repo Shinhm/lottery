@@ -42,178 +42,179 @@ class _MapScreenState extends State<MapScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: LayoutBuilder(
-          builder: (BuildContext context, BoxConstraints constraints) {
-            ScreenUtil.init(context, width: 550, height: 1334);
-            return FutureBuilder<LotteryPlaceModel>(
-              future: lotteryPlace,
-              builder:
-                  (BuildContext context, AsyncSnapshot lotteryPlaceSnapShot) {
-                if (!lotteryPlaceSnapShot.hasData) {
-                  return Center(child: CircularProgressIndicator());
-                }
-                LotteryPlaceModel data = lotteryPlaceSnapShot.data;
-                List<LotteryWinningPlaceModel> winningPlaces =
-                    data.winningPlaces;
-                print(winningPlaces[0].shopName);
-                List<String> dropdownArray = [];
-                for (var i = widget.drwNo; i > 1; i--) {
-                  dropdownArray.add("$i 회차");
-                }
-                return Column(
-                  children: <Widget>[
-                    Container(
-                      height: ScreenUtil().setHeight(1000),
-                      child: Stack(
-                        children: <Widget>[
-                          GoogleMap(
-                            markers: Set<Marker>.of(markers.values),
-                            mapType: MapType.normal,
-                            initialCameraPosition: firstCameraSetting(
-                                data.winningPlaces[0].lat,
-                                data.winningPlaces[0].lng),
-                            onMapCreated: (GoogleMapController controller) {
-                              _controller.complete(controller);
+      body: LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+          ScreenUtil.init(context, width: 375, height: 812);
+          return FutureBuilder<LotteryPlaceModel>(
+            future: lotteryPlace,
+            builder:
+                (BuildContext context, AsyncSnapshot lotteryPlaceSnapShot) {
+              if (!lotteryPlaceSnapShot.hasData) {
+                return Center(child: CircularProgressIndicator());
+              }
+              LotteryPlaceModel data = lotteryPlaceSnapShot.data;
+              List<LotteryWinningPlaceModel> winningPlaces = data.winningPlaces;
+              print(winningPlaces[0].shopName);
+              List<String> dropdownArray = [];
+              for (var i = widget.drwNo; i > 1; i--) {
+                dropdownArray.add("$i 회차");
+              }
+              return Column(
+                children: <Widget>[
+                  Container(
+                    height: ScreenUtil().setHeight(812),
+                    child: Stack(
+                      children: <Widget>[
+                        GoogleMap(
+                          markers: Set<Marker>.of(markers.values),
+                          mapType: MapType.normal,
+                          initialCameraPosition: firstCameraSetting(
+                              data.winningPlaces[0].lat,
+                              data.winningPlaces[0].lng),
+                          onMapCreated: (GoogleMapController controller) {
+                            _controller.complete(controller);
 
-                              for (final winningPlace in winningPlaces) {
-                                _addMaker(winningPlace.lat, winningPlace.lng);
-                              }
-                            },
-                          ),
-                          Positioned(
-                            top: 25,
-                            left: 10,
-                            child: Container(
-                              width: ScreenUtil().setWidth(130),
-                              height: ScreenUtil().setHeight(90),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                              ),
-                              child: Center(
-                                child: DropdownButton<String>(
-                                  value: dropdownValue,
-                                  elevation: 16,
-                                  icon: Icon(FontAwesome.sort_down),
-                                  iconSize: 20,
-                                  underline: Container(
-                                    height: 0,
-                                  ),
-                                  onChanged: (String value) async {
-                                    setState(() {
-                                      _markerIdCounter = 1;
-                                      lotteryPlace = fetchLotteryWinningPlace(
-                                              value.split(" ")[0])
-                                          .then((place) {
-                                        markers.clear();
-                                        var _winningPlaces =
-                                            place.winningPlaces;
-                                        for (final winningPlace
-                                            in _winningPlaces) {
-                                          _addMaker(winningPlace.lat,
-                                              winningPlace.lng);
-                                        }
-                                        _carouselController.jumpToPage(0);
-                                        _goToPlace(_winningPlaces[0].lat,
-                                            _winningPlaces[0].lng);
-                                        return place;
-                                      });
-                                      dropdownValue = value;
-                                    });
-                                  },
-                                  items: dropdownArray
-                                      .map<DropdownMenuItem<String>>(
-                                          (String value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(value),
-                                    );
-                                  }).toList(),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Positioned(
-                            top: 20,
-                            right: 20,
-                            child: Container(
-                              width: ScreenUtil().setWidth(80),
-                              height: ScreenUtil().setHeight(70),
-                              decoration: BoxDecoration(
-                                  color: Colors.grey[300],
-                                  borderRadius: BorderRadius.circular(100)),
-                              child: InkWell(
-                                onTap: () {
-                                  Navigator.pop(context);
-                                },
-                                child: Icon(
-                                  Icons.cancel,
-                                  size: ScreenUtil().setSp(30),
-                                  color: Colors.black54,
-                                ),
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    Container(
-                      child: CarouselSlider.builder(
-                        carouselController: _carouselController,
-                        options: CarouselOptions(
-                            height: ScreenUtil().setHeight(190),
-                            autoPlay: false,
-                            enlargeCenterPage: true,
-                            enableInfiniteScroll: false,
-                            initialPage: 0,
-                            onPageChanged: (index, reason) {
-                              LotteryWinningPlaceModel lwpm =
-                                  winningPlaces[index];
-                              _goToPlace(lwpm.lat, lwpm.lng);
-                            }),
-                        itemCount: winningPlaces.length,
-                        itemBuilder: (BuildContext context, int itemIndex) {
-                          LotteryWinningPlaceModel lwpm =
-                              winningPlaces[itemIndex];
-                          Map<String, String> gameTypeMap = <String, String>{
-                            "AUTO": "자동",
-                            "SEMI_AUTO": "반자동",
-                            "MANUAL": "수동",
-                            "UNKNOWN": "알수없음"
-                          };
-                          return Container(
-                            width: ScreenUtil().setWidth(550),
-                            child: Padding(
-                              padding: const EdgeInsets.all(25.0),
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Text(
-                                      "${lwpm.shopName} ( ${lwpm.lat}, ${lwpm.lng} ) - ${gameTypeMap[lwpm.gameType]}"),
-                                  Text(lwpm.address),
-                                ],
-                              ),
-                            ),
+                            for (final winningPlace in winningPlaces) {
+                              _addMaker(winningPlace.lat, winningPlace.lng);
+                            }
+                          },
+                          myLocationButtonEnabled: false,
+                        ),
+                        Positioned(
+                          top: 25,
+                          left: 10,
+                          child: Container(
+                            width: ScreenUtil().setWidth(130),
+                            height: ScreenUtil().setHeight(90),
                             decoration: BoxDecoration(
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey[400],
-                                  offset: Offset(0, 4),
-                                  blurRadius: 4,
-                                ),
-                              ],
+                              color: Colors.white,
                             ),
-                          );
-                        },
-                      ),
+                            child: Center(
+                              child: DropdownButton<String>(
+                                value: dropdownValue,
+                                elevation: 16,
+                                icon: Icon(FontAwesome.sort_down),
+                                iconSize: 20,
+                                underline: Container(
+                                  height: 0,
+                                ),
+                                onChanged: (String value) async {
+                                  setState(() {
+                                    _markerIdCounter = 1;
+                                    lotteryPlace = fetchLotteryWinningPlace(
+                                            value.split(" ")[0])
+                                        .then((place) {
+                                      markers.clear();
+                                      var _winningPlaces = place.winningPlaces;
+                                      for (final winningPlace
+                                          in _winningPlaces) {
+                                        _addMaker(
+                                            winningPlace.lat, winningPlace.lng);
+                                      }
+                                      _carouselController.jumpToPage(0);
+                                      _goToPlace(_winningPlaces[0].lat,
+                                          _winningPlaces[0].lng);
+                                      return place;
+                                    });
+                                    dropdownValue = value;
+                                  });
+                                },
+                                items: dropdownArray
+                                    .map<DropdownMenuItem<String>>(
+                                        (String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value),
+                                  );
+                                }).toList(),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          top: 20,
+                          right: 20,
+                          child: Container(
+                            width: ScreenUtil().setWidth(80),
+                            height: ScreenUtil().setHeight(70),
+                            decoration: BoxDecoration(
+                                color: Colors.grey[300],
+                                borderRadius: BorderRadius.circular(100)),
+                            child: InkWell(
+                              onTap: () {},
+                              child: Icon(
+                                Icons.cancel,
+                                size: ScreenUtil().setSp(30),
+                                color: Colors.black54,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          bottom: ScreenUtil().setHeight(60),
+                          child: Container(
+                            width: ScreenUtil().setWidth(375),
+                            child: CarouselSlider.builder(
+                              carouselController: _carouselController,
+                              options: CarouselOptions(
+                                  height: ScreenUtil().setHeight(130),
+                                  autoPlay: false,
+                                  enlargeCenterPage: true,
+                                  enableInfiniteScroll: false,
+                                  initialPage: 0,
+                                  onPageChanged: (index, reason) {
+                                    LotteryWinningPlaceModel lwpm =
+                                        winningPlaces[index];
+                                    _goToPlace(lwpm.lat, lwpm.lng);
+                                  }),
+                              itemCount: winningPlaces.length,
+                              itemBuilder:
+                                  (BuildContext context, int itemIndex) {
+                                LotteryWinningPlaceModel lwpm =
+                                    winningPlaces[itemIndex];
+                                Map<String, String> gameTypeMap =
+                                    <String, String>{
+                                  "AUTO": "자동",
+                                  "SEMI_AUTO": "반자동",
+                                  "MANUAL": "수동",
+                                  "UNKNOWN": "알수없음"
+                                };
+                                return Container(
+                                  width: ScreenUtil().setWidth(550),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(25.0),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Text(
+                                            "${lwpm.shopName} - ${gameTypeMap[lwpm.gameType]}"),
+                                        Text(lwpm.address),
+                                      ],
+                                    ),
+                                  ),
+                                  decoration: BoxDecoration(
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey[400],
+                                        offset: Offset(0, 4),
+                                        blurRadius: 4,
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                );
-              },
-            );
-          },
-        ),
+                  ),
+                ],
+              );
+            },
+          );
+        },
       ),
     );
   }
