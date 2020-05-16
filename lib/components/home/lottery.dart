@@ -9,8 +9,15 @@ import '../../models/Lottery.model.dart';
 class LotteryComponent extends StatelessWidget {
   final Future<Lottery> lottery;
   final int lotteryNo;
+  final bool activeLogo;
+  final String title;
 
-  LotteryComponent({Key key, @required this.lottery, @required this.lotteryNo})
+  LotteryComponent(
+      {Key key,
+      @required this.lottery,
+      @required this.lotteryNo,
+      this.activeLogo,
+      this.title})
       : super(key: key);
 
   @override
@@ -53,16 +60,19 @@ class LotteryComponent extends StatelessWidget {
   }
 
   Widget gameViewer(Lottery lottery) {
+    print(title);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Container(
-          alignment: Alignment.centerRight,
-          child: Container(
-              width: ScreenUtil().setWidth(68),
-              height: ScreenUtil().setWidth(68),
-              child: Image.asset('assets/images/logo.png')),
-        ),
+        activeLogo == false
+            ? Container(
+                alignment: Alignment.centerRight,
+                child: Container(
+                    width: ScreenUtil().setWidth(68),
+                    height: ScreenUtil().setWidth(68),
+                    child: Image.asset('assets/images/logo.png')),
+              )
+            : null,
         Padding(
           padding: EdgeInsets.only(
               top: ScreenUtil().setHeight(18),
@@ -71,15 +81,15 @@ class LotteryComponent extends StatelessWidget {
             children: <Widget>[
               Container(
                 width: ScreenUtil().setWidth(156),
-                height: ScreenUtil().setHeight(36),
+                height: ScreenUtil().setHeight(37),
                 child: Text(
-                  '$lotteryNo회 당첨번호',
+                  title == null ? '$lotteryNo회 당첨번호' : title,
                   style: TextStyle(
-                    letterSpacing: ScreenUtil().setWidth(-0.36),
+                      letterSpacing: ScreenUtil().setWidth(-0.36),
                       fontWeight: FontWeight.bold,
                       fontFamily: 'SpoqaHanSans',
                       fontSize: ScreenUtil().setSp(24)),
-                  textAlign: TextAlign.center,
+                  textAlign: TextAlign.left,
                 ),
               ),
             ],
@@ -88,7 +98,7 @@ class LotteryComponent extends StatelessWidget {
         Container(
           child: matchingRound(lottery),
         ),
-      ],
+      ].where((Object o) => o != null).toList(),
     );
   }
 

@@ -1,4 +1,3 @@
-
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -45,7 +44,6 @@ class _HomeScreenState extends State<HomeScreen> {
         'https://m.dhlottery.co.kr/qr.do?method=winQr&v=${result.rawContent.split('v=')[1]}');
     dom.Document document = parser.parse(response.body);
     String drwTitle = document.getElementsByClassName("key_clr1").first.text;
-    print("drwTitle = $drwTitle");
     int drwNo = int.parse(matchNumber.stringMatch(drwTitle));
     document
         .getElementsByClassName("tbl_basic")
@@ -68,7 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    final birthday = DateTime(2002, 12, 07, 20, 00);
+    final birthday = DateTime(2002, 12, 07, 20, 50);
     final date2 = DateTime.now();
     final difference = date2.difference(birthday).inDays;
     final drwNo = (difference ~/ 7) + 1;
@@ -99,6 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Center(
                     child: Container(
                         child: LotteryComponent(
+                  activeLogo: false,
                   lottery: lottery,
                   lotteryNo: lotteryNo,
                 ))),

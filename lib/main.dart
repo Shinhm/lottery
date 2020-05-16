@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:lottery/screens/HomeScreen.dart';
 import 'package:lottery/screens/MapScreen.dart';
 import 'package:lottery/screens/QRCodeScreen.dart';
@@ -155,9 +156,13 @@ class _MyAppState extends State<MyApp> {
       title: 'lottery-app',
       home: PageScreen(),
       theme: ThemeData(
+        brightness: Brightness.light,
+        accentColor: Color.fromRGBO(236, 234, 234, 1),
+        secondaryHeaderColor: Color.fromRGBO(236, 234, 234, 1),
+        backgroundColor: Color.fromRGBO(236, 234, 234, 1),
         primaryColor: Color.fromRGBO(236, 234, 234, 1),
-        accentColor: Colors.cyan[600],
         scaffoldBackgroundColor: Color.fromRGBO(236, 234, 234, 1),
+        canvasColor: Color.fromRGBO(236, 234, 234, 1),
         // Define the default font family.
         fontFamily: 'SpoqaHanSans',
         // Define the default TextTheme. Use this to specify the default
@@ -189,7 +194,6 @@ class _PageScreenState extends State<PageScreen> {
   void jumpToHomeScreen() {
     _controller.jumpToPage(1);
   }
-
 
   @override
   void initState() {

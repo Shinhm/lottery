@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lottery/components/home/lottery.dart';
 import 'package:lottery/components/myLottery/lotteryResult.dart';
 import 'package:lottery/models/Lottery.model.dart';
 import 'package:lottery/models/MyLotteryList.model.dart';
@@ -35,21 +36,37 @@ class _LotteryScreenState extends State<LotteryScreen> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-      ),
-      body: SafeArea(
-        child: LayoutBuilder(
-          builder: (context, index) {
-            ScreenUtil.init(context, width: 550, height: 1334);
-            return Container(
-              width: ScreenUtil().setWidth(550),
-              height: ScreenUtil().setHeight(1334),
-              child: LotteryResult(
-                myLotteryList: myLotteryList,
-                lottery: lottery,
-              ),
-            );
-          },
+        title: Text(
+          '${widget.drwNo} 회차',
+          style: TextStyle(fontSize: ScreenUtil().setSp(17)),
         ),
+      ),
+      body: LayoutBuilder(
+        builder: (context, index) {
+          ScreenUtil.init(context, width: 375, height: 812);
+          return Column(
+            children: <Widget>[
+              Container(
+                  width: ScreenUtil().setWidth(375),
+                  height: ScreenUtil().setHeight(130),
+                  padding: EdgeInsets.only(
+                      right: ScreenUtil().setWidth(24),
+                      left: ScreenUtil().setWidth(24)),
+                  child: LotteryComponent(
+                    lottery: lottery,
+                    lotteryNo: widget.drwNo,
+                  )),
+              Container(
+                width: ScreenUtil().setWidth(375),
+                height: ScreenUtil().setHeight(550),
+                child: LotteryResult(
+                  myLotteryList: myLotteryList,
+                  lottery: lottery,
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }

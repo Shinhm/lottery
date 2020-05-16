@@ -39,7 +39,7 @@ class _LotteryListState extends State<LotteryList> {
           padding: EdgeInsets.only(left: ScreenUtil().setWidth(6)),
           margin: EdgeInsets.only(bottom: ScreenUtil().setHeight(8)),
           width: ScreenUtil().setWidth(375),
-          height: ScreenUtil().setHeight(36),
+          height: ScreenUtil().setHeight(37),
           child: Text(
             '내 번호',
             style: TextStyle(

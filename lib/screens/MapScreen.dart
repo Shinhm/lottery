@@ -26,6 +26,7 @@ class _MapScreenState extends State<MapScreen> {
   MarkerId selectedMarker;
   int _markerIdCounter = 1;
   int _initialCarouselIndex = 0;
+  List<String> dropdownArray;
 
   CameraPosition firstCameraSetting(lat, lng) => CameraPosition(
         target: LatLng(lat, lng),
@@ -37,11 +38,49 @@ class _MapScreenState extends State<MapScreen> {
     super.initState();
     lotteryPlace = fetchLotteryWinningPlace(widget.drwNo);
     dropdownValue = "${widget.drwNo} 회차";
+    dropdownArray = [];
+    for (var i = widget.drwNo; i > 1; i--) {
+      dropdownArray.add("$i 회차");
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: DropdownButton<String>(
+          value: dropdownValue,
+          elevation: 6,
+          iconSize: 20,
+          isExpanded: true,
+          underline: Container(
+            height: 0,
+          ),
+          onChanged: (String value) async {
+            setState(() {
+              _markerIdCounter = 1;
+              lotteryPlace =
+                  fetchLotteryWinningPlace(value.split(" ")[0]).then((place) {
+                markers.clear();
+                var _winningPlaces = place.winningPlaces;
+                for (final winningPlace in _winningPlaces) {
+                  _addMaker(winningPlace.lat, winningPlace.lng);
+                }
+                _carouselController.jumpToPage(0);
+                _goToPlace(_winningPlaces[0].lat, _winningPlaces[0].lng);
+                return place;
+              });
+              dropdownValue = value;
+            });
+          },
+          items: dropdownArray.map<DropdownMenuItem<String>>((String value) {
+            return DropdownMenuItem<String>(
+              value: value,
+              child: Center(child: Text(value)),
+            );
+          }).toList(),
+        ),
+      ),
       body: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
           ScreenUtil.init(context, width: 375, height: 812);
@@ -54,20 +93,16 @@ class _MapScreenState extends State<MapScreen> {
               }
               LotteryPlaceModel data = lotteryPlaceSnapShot.data;
               List<LotteryWinningPlaceModel> winningPlaces = data.winningPlaces;
-              print(winningPlaces[0].shopName);
-              List<String> dropdownArray = [];
-              for (var i = widget.drwNo; i > 1; i--) {
-                dropdownArray.add("$i 회차");
-              }
               return Column(
                 children: <Widget>[
                   Container(
-                    height: ScreenUtil().setHeight(812),
+                    height: ScreenUtil().setHeight(723),
                     child: Stack(
                       children: <Widget>[
                         GoogleMap(
                           markers: Set<Marker>.of(markers.values),
                           mapType: MapType.normal,
+                          zoomControlsEnabled: false,
                           initialCameraPosition: firstCameraSetting(
                               data.winningPlaces[0].lat,
                               data.winningPlaces[0].lng),
@@ -81,83 +116,13 @@ class _MapScreenState extends State<MapScreen> {
                           myLocationButtonEnabled: false,
                         ),
                         Positioned(
-                          top: 25,
-                          left: 10,
-                          child: Container(
-                            width: ScreenUtil().setWidth(130),
-                            height: ScreenUtil().setHeight(90),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                            ),
-                            child: Center(
-                              child: DropdownButton<String>(
-                                value: dropdownValue,
-                                elevation: 16,
-                                icon: Icon(FontAwesome.sort_down),
-                                iconSize: 20,
-                                underline: Container(
-                                  height: 0,
-                                ),
-                                onChanged: (String value) async {
-                                  setState(() {
-                                    _markerIdCounter = 1;
-                                    lotteryPlace = fetchLotteryWinningPlace(
-                                            value.split(" ")[0])
-                                        .then((place) {
-                                      markers.clear();
-                                      var _winningPlaces = place.winningPlaces;
-                                      for (final winningPlace
-                                          in _winningPlaces) {
-                                        _addMaker(
-                                            winningPlace.lat, winningPlace.lng);
-                                      }
-                                      _carouselController.jumpToPage(0);
-                                      _goToPlace(_winningPlaces[0].lat,
-                                          _winningPlaces[0].lng);
-                                      return place;
-                                    });
-                                    dropdownValue = value;
-                                  });
-                                },
-                                items: dropdownArray
-                                    .map<DropdownMenuItem<String>>(
-                                        (String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value),
-                                  );
-                                }).toList(),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          top: 20,
-                          right: 20,
-                          child: Container(
-                            width: ScreenUtil().setWidth(80),
-                            height: ScreenUtil().setHeight(70),
-                            decoration: BoxDecoration(
-                                color: Colors.grey[300],
-                                borderRadius: BorderRadius.circular(100)),
-                            child: InkWell(
-                              onTap: () {},
-                              child: Icon(
-                                Icons.cancel,
-                                size: ScreenUtil().setSp(30),
-                                color: Colors.black54,
-                              ),
-                            ),
-                          ),
-                        ),
-                        Positioned(
                           bottom: ScreenUtil().setHeight(60),
                           child: Container(
                             width: ScreenUtil().setWidth(375),
                             child: CarouselSlider.builder(
                               carouselController: _carouselController,
                               options: CarouselOptions(
-                                  height: ScreenUtil().setHeight(130),
+                                  height: ScreenUtil().setHeight(140),
                                   autoPlay: false,
                                   enlargeCenterPage: true,
                                   enableInfiniteScroll: false,
@@ -180,28 +145,77 @@ class _MapScreenState extends State<MapScreen> {
                                   "UNKNOWN": "알수없음"
                                 };
                                 return Container(
-                                  width: ScreenUtil().setWidth(550),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(25.0),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Text(
-                                            "${lwpm.shopName} - ${gameTypeMap[lwpm.gameType]}"),
-                                        Text(lwpm.address),
-                                      ],
-                                    ),
-                                  ),
-                                  decoration: BoxDecoration(
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey[400],
-                                        offset: Offset(0, 4),
-                                        blurRadius: 4,
+                                  margin: EdgeInsets.only(
+                                      top: ScreenUtil().setHeight(20),
+                                      bottom: ScreenUtil().setHeight(20),
+                                      left: ScreenUtil().setWidth(5),
+                                      right: ScreenUtil().setWidth(5)),
+                                  padding: EdgeInsets.only(
+                                      right: ScreenUtil().setWidth(20),
+                                      left: ScreenUtil().setWidth(20)),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                            bottom: ScreenUtil().setHeight(10)),
+                                        child: Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Padding(
+                                              padding: EdgeInsets.only(
+                                                  right:
+                                                      ScreenUtil().setWidth(5)),
+                                              child: Icon(Icons.store,
+                                                  size: ScreenUtil().setSp(17)),
+                                            ),
+                                            Text(
+                                              "${lwpm.shopName} - ${gameTypeMap[lwpm.gameType]}",
+                                              textAlign: TextAlign.left,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.baseline,
+                                        textBaseline: TextBaseline.ideographic,
+                                        children: <Widget>[
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                                right:
+                                                    ScreenUtil().setWidth(5)),
+                                            child: Icon(
+                                              FontAwesome.map_marker,
+                                              size: ScreenUtil().setSp(17),
+                                            ),
+                                          ),
+                                          Container(
+                                            width: ScreenUtil().setWidth(220),
+                                            child: Text(
+                                              lwpm.address,
+                                              textAlign: TextAlign.left,
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ],
                                   ),
+                                  decoration: BoxDecoration(
+                                      color: Color.fromRGBO(255, 255, 255, 1),
+                                      borderRadius: BorderRadius.circular(
+                                          ScreenUtil().setSp(30)),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Color.fromRGBO(31, 26, 29, .3),
+                                          blurRadius: 0.5,
+                                          spreadRadius: 0.5,
+                                          offset: Offset(2, 2),
+                                        )
+                                      ]),
                                 );
                               },
                             ),
