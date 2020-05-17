@@ -52,7 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
         .map((span) {
       numbers.add(int.parse(span.text));
       if (numbers.length == 6) {
-        MyLotteryListModel lottery = MyLotteryListModel(drwNo, numbers[0],
+        MyLotteryListModel lottery = MyLotteryListModel(0, drwNo, numbers[0],
             numbers[1], numbers[2], numbers[3], numbers[4], numbers[5]);
         addLotteryNumbers(lottery);
         numbers.clear();
@@ -91,16 +91,15 @@ class _HomeScreenState extends State<HomeScreen> {
               right: ScreenUtil().setWidth(24),
               left: ScreenUtil().setWidth(24)),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Container(
-                width: ScreenUtil().setWidth(375),
-                child: Center(
-                    child: Container(
-                        child: LotteryComponent(
+                child: Container(
+                    child: LotteryComponent(
                   activeLogo: false,
                   lottery: lottery,
                   lotteryNo: lotteryNo,
-                ))),
+                )),
               ),
               Container(
                 width: ScreenUtil().setWidth(375),

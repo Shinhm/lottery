@@ -5,8 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:lottery/components/_common/skeleton.dart';
 import 'package:lottery/models/LotteryPlace.model.dart';
 import 'package:lottery/services/lotteryService.dart';
+import 'package:lottie/lottie.dart';
 
 class MapScreen extends StatefulWidget {
   final int drwNo;
@@ -25,7 +27,6 @@ class _MapScreenState extends State<MapScreen> {
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
   MarkerId selectedMarker;
   int _markerIdCounter = 1;
-  int _initialCarouselIndex = 0;
   List<String> dropdownArray;
 
   CameraPosition firstCameraSetting(lat, lng) => CameraPosition(
@@ -89,14 +90,85 @@ class _MapScreenState extends State<MapScreen> {
             builder:
                 (BuildContext context, AsyncSnapshot lotteryPlaceSnapShot) {
               if (!lotteryPlaceSnapShot.hasData) {
-                return Center(child: CircularProgressIndicator());
+                return Stack(
+                  children: <Widget>[
+                    Skeleton(
+                      width: 375,
+                      height: 712,
+                    ),
+                    Positioned(
+                      left: ScreenUtil().setWidth(40),
+                      bottom: ScreenUtil().setHeight(80),
+                      child: Container(
+                        padding: EdgeInsets.only(
+                            right: ScreenUtil().setWidth(20),
+                            left: ScreenUtil().setWidth(20)),
+                        width: ScreenUtil().setWidth(295),
+                        height: ScreenUtil().setHeight(100),
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(50),
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Color.fromRGBO(31, 26, 29, .3),
+                                  blurRadius: 0.5,
+                                  spreadRadius: 0.5,
+                                  offset: Offset(2, 2))
+                            ]),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  bottom: ScreenUtil().setHeight(10)),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                        right: ScreenUtil().setWidth(5)),
+                                    child: Icon(Icons.store,
+                                        size: ScreenUtil().setSp(17)),
+                                  ),
+                                  Skeleton(
+                                    width: 100,
+                                    height: 15,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.baseline,
+                              textBaseline: TextBaseline.ideographic,
+                              children: <Widget>[
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                      right: ScreenUtil().setWidth(5)),
+                                  child: Icon(
+                                    FontAwesome.map_marker,
+                                    size: ScreenUtil().setSp(17),
+                                  ),
+                                ),
+                                Skeleton(
+                                  width: 200,
+                                  height: 15,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                  ],
+                );
               }
               LotteryPlaceModel data = lotteryPlaceSnapShot.data;
               List<LotteryWinningPlaceModel> winningPlaces = data.winningPlaces;
               return Column(
                 children: <Widget>[
                   Container(
-                    height: ScreenUtil().setHeight(723),
+                    height: ScreenUtil().setHeight(712),
                     child: Stack(
                       children: <Widget>[
                         GoogleMap(
@@ -169,12 +241,19 @@ class _MapScreenState extends State<MapScreen> {
                                               padding: EdgeInsets.only(
                                                   right:
                                                       ScreenUtil().setWidth(5)),
-                                              child: Icon(Icons.store,
-                                                  size: ScreenUtil().setSp(17)),
+                                              child: Lottie.asset(
+                                                  'assets/lottie/store.json',
+                                                  width: 25,
+                                                  height: 18),
                                             ),
-                                            Text(
-                                              "${lwpm.shopName} - ${gameTypeMap[lwpm.gameType]}",
-                                              textAlign: TextAlign.left,
+                                            Container(
+                                              padding: EdgeInsets.only(
+                                                  top: ScreenUtil()
+                                                      .setHeight(1)),
+                                              child: Text(
+                                                "${lwpm.shopName} - ${gameTypeMap[lwpm.gameType]}",
+                                                textAlign: TextAlign.left,
+                                              ),
                                             ),
                                           ],
                                         ),
@@ -188,12 +267,16 @@ class _MapScreenState extends State<MapScreen> {
                                             padding: EdgeInsets.only(
                                                 right:
                                                     ScreenUtil().setWidth(5)),
-                                            child: Icon(
-                                              FontAwesome.map_marker,
-                                              size: ScreenUtil().setSp(17),
+                                            child: Lottie.asset(
+                                              'assets/lottie/marker.json',
+                                              width: 25,
+                                              height: 20,
+                                              repeat: false,
                                             ),
                                           ),
                                           Container(
+                                            padding: EdgeInsets.only(
+                                                top: ScreenUtil().setHeight(1)),
                                             width: ScreenUtil().setWidth(220),
                                             child: Text(
                                               lwpm.address,

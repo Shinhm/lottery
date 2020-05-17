@@ -7,7 +7,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottery/components/_common/lotteryItem.dart';
 import 'package:lottery/models/MyLotteryList.model.dart';
 import 'package:lottery/screens/LotteryScreen.dart';
-import 'package:lottery/screens/MapScreen.dart';
 import 'package:lottery/services/lotteryService.dart';
 
 class LotteryList extends StatefulWidget {

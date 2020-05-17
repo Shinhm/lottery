@@ -37,7 +37,7 @@ dependencies:
     path: 1.6.4
     after_layout: ^1.0.7+2
     lottie: ^0.3.4
-
+    shimmer: ^1.1.1
 
 dev_dependencies:
     flutter_test:

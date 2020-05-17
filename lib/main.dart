@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lottery/screens/HomeScreen.dart';
 import 'package:lottery/screens/MapScreen.dart';
-import 'package:lottery/screens/QRCodeScreen.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -167,14 +166,6 @@ class _MyAppState extends State<MyApp> {
         fontFamily: 'SpoqaHanSans',
         // Define the default TextTheme. Use this to specify the default
         // text styling for headlines, titles, bodies of text, and more.
-        textTheme: TextTheme(
-          headline: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
-          title: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
-          body1: TextStyle(
-              fontSize: 14.0,
-              fontFamily: 'Hind',
-              color: Color.fromRGBO(31, 26, 29, 1)),
-        ),
       ),
     );
   }
@@ -221,7 +212,6 @@ class _PageScreenState extends State<PageScreen> {
           drwNo: lotteryNo,
         ),
         HomeScreen(),
-        QRCodeScreen(callbackJumpToHomeScreen: jumpToHomeScreen),
       ],
     );
   }

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lottery/components/_common/skeleton.dart';
 
 import '../../models/Lottery.model.dart';
 
@@ -25,13 +26,11 @@ class LotteryComponent extends StatelessWidget {
     return FutureBuilder<Lottery>(
       future: lottery,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (snapshot.hasData) {
-          return gameViewer(snapshot.data);
-        } else if (snapshot.hasError) {
+        if (snapshot.hasError) {
           return Text("${snapshot.error}");
         }
 
-        return Center(child: CircularProgressIndicator());
+        return gameViewer(snapshot);
       },
     );
   }
@@ -59,7 +58,8 @@ class LotteryComponent extends StatelessWidget {
     return color;
   }
 
-  Widget gameViewer(Lottery lottery) {
+  Widget gameViewer(AsyncSnapshot snapshot) {
+    bool hasData = snapshot.hasData;
     print(title);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -79,52 +79,62 @@ class LotteryComponent extends StatelessWidget {
               bottom: ScreenUtil().setHeight(26)),
           child: Row(
             children: <Widget>[
-              Container(
-                width: ScreenUtil().setWidth(156),
-                height: ScreenUtil().setHeight(37),
-                child: Text(
-                  title == null ? '$lotteryNo회 당첨번호' : title,
-                  style: TextStyle(
-                      letterSpacing: ScreenUtil().setWidth(-0.36),
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'SpoqaHanSans',
-                      fontSize: ScreenUtil().setSp(24)),
-                  textAlign: TextAlign.left,
-                ),
-              ),
+              hasData
+                  ? Container(
+                      width: ScreenUtil().setWidth(156),
+                      height: ScreenUtil().setHeight(37),
+                      child: Text(
+                        title == null ? '$lotteryNo회 당첨번호' : title,
+                        style: TextStyle(
+                            letterSpacing: ScreenUtil().setWidth(-0.36),
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'SpoqaHanSans',
+                            fontSize: ScreenUtil().setSp(24)),
+                        textAlign: TextAlign.left,
+                      ),
+                    )
+                  : Skeleton(
+                      width: 156,
+                      height: 37,
+                      type: EnumType.CIRCLE,
+                    ),
             ],
           ),
         ),
         Container(
-          child: matchingRound(lottery),
+          child: matchingRound(snapshot),
         ),
       ].where((Object o) => o != null).toList(),
     );
   }
 
-  Widget matchingRound(Lottery lottery) {
+  Widget matchingRound(AsyncSnapshot snapshot) {
+    bool hasData = snapshot.hasData;
+    Lottery lottery = snapshot.data;
     return Padding(
       padding: EdgeInsets.only(
           left: ScreenUtil().setWidth(3), right: ScreenUtil().setWidth(2)),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          lotteryNumberItem(lottery.num1),
-          lotteryNumberItem(lottery.num2),
-          lotteryNumberItem(lottery.num3),
-          lotteryNumberItem(lottery.num4),
-          lotteryNumberItem(lottery.num5),
-          lotteryNumberItem(lottery.num6),
-          Container(
-            child: Icon(
-              FontAwesome.plus,
-              size: ScreenUtil().setWidth(12),
-            ),
-          ),
-          lotteryNumberItem(lottery.bonusNum),
-        ],
-      ),
+      child: hasData
+          ? Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                lotteryNumberItem(lottery.num1),
+                lotteryNumberItem(lottery.num2),
+                lotteryNumberItem(lottery.num3),
+                lotteryNumberItem(lottery.num4),
+                lotteryNumberItem(lottery.num5),
+                lotteryNumberItem(lottery.num6),
+                Container(
+                  child: Icon(
+                    FontAwesome.plus,
+                    size: ScreenUtil().setWidth(12),
+                  ),
+                ),
+                lotteryNumberItem(lottery.bonusNum),
+              ],
+            )
+          : Skeleton(width: 375, height: 40, type: EnumType.CIRCLE),
     );
   }
 

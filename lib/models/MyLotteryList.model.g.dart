@@ -8,6 +8,7 @@ part of 'MyLotteryList.model.dart';
 
 MyLotteryListModel _$MyLotteryListModelFromJson(Map<String, dynamic> json) {
   return MyLotteryListModel(
+    json['id'] as int,
     json['drwNo'] as int,
     json['num1'] as int,
     json['num2'] as int,
@@ -20,6 +21,7 @@ MyLotteryListModel _$MyLotteryListModelFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$MyLotteryListModelToJson(MyLotteryListModel instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'drwNo': instance.drwNo,
       'num1': instance.num1,
       'num2': instance.num2,

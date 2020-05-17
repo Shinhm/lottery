@@ -2,7 +2,6 @@ import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/material.dart';
 import 'package:lottery/models/MyLotteryList.model.dart';
 import 'package:lottery/services/lotteryService.dart';
-import 'package:after_layout/after_layout.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:html/parser.dart' as parser;
@@ -18,8 +17,6 @@ class QRCodeScreen extends StatefulWidget {
 }
 
 class _QRCodeScreenState extends State<QRCodeScreen> {
-  var _numberOfCameras = 0;
-
   void main() async {
     try {
       var result = await BarcodeScanner.scan(
@@ -55,7 +52,7 @@ class _QRCodeScreenState extends State<QRCodeScreen> {
           .map((span) {
         numbers.add(int.parse(span.text));
         if (numbers.length == 6) {
-          MyLotteryListModel lottery = MyLotteryListModel(drwNo, numbers[0],
+          MyLotteryListModel lottery = MyLotteryListModel(0, drwNo, numbers[0],
               numbers[1], numbers[2], numbers[3], numbers[4], numbers[5]);
           addLotteryNumbers(lottery);
           numbers.clear();
@@ -73,11 +70,6 @@ class _QRCodeScreenState extends State<QRCodeScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    Future.delayed(Duration.zero, () async {
-      _numberOfCameras = await BarcodeScanner.numberOfCameras;
-      main();
-      setState(() {});
-    });
   }
 
   @override

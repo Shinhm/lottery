@@ -6,7 +6,6 @@ import 'package:lottery/components/_common/lotteryItem.dart';
 import 'package:lottery/helper/numberFormatHelper.dart';
 import 'package:lottery/models/Lottery.model.dart';
 import 'package:lottery/models/MyLotteryList.model.dart';
-import 'package:lottery/models/MyLotteryNumbers.model.dart';
 import 'package:lottie/lottie.dart';
 
 class LotteryResult extends StatelessWidget {
@@ -57,8 +56,6 @@ class LotteryResult extends StatelessWidget {
       builder: (BuildContext context, AsyncSnapshot lotterySnapshot) {
         var hasData = lotterySnapshot.hasData;
         Lottery lotteryNo = lotterySnapshot.data;
-        var hasError = lotterySnapshot.hasError;
-        var error = lotterySnapshot.error;
 
         if (!hasData) {
           return Center(child: CircularProgressIndicator());
@@ -69,8 +66,6 @@ class LotteryResult extends StatelessWidget {
           builder: (context, snapshot) {
             var hasData = snapshot.hasData;
             List<MyLotteryListModel> data = snapshot.data;
-            var hasError = snapshot.hasError;
-            var error = snapshot.error;
 
             if (!hasData) {
               return Center(child: CircularProgressIndicator());
@@ -189,8 +184,10 @@ class LotteryResult extends StatelessWidget {
                                     child: Column(
                                       children: <Widget>[
                                         Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
                                           children: <Widget>[
                                             Container(
                                               width: ScreenUtil().setWidth(60),
@@ -229,10 +226,14 @@ class LotteryResult extends StatelessWidget {
                                                 height:
                                                     ScreenUtil().setHeight(80)),
                                             Container(
-                                              padding: EdgeInsets.only(top: ScreenUtil().setHeight(25)),
+                                                padding: EdgeInsets.only(
+                                                    top: ScreenUtil()
+                                                        .setHeight(25)),
                                                 child: Icon(FontAwesome.won)),
                                             Container(
-                                              padding: EdgeInsets.only(top: ScreenUtil().setHeight(25)),
+                                              padding: EdgeInsets.only(
+                                                  top: ScreenUtil()
+                                                      .setHeight(25)),
                                               child: Text(
                                                 '${NumberFormatHelper.numberFormat(rankInfo.winningPriceByRank)}',
                                                 style: TextStyle(
