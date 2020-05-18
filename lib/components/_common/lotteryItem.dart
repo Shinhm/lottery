@@ -19,19 +19,19 @@ class LotteryItem extends StatelessWidget {
     Color color;
     switch ((lotteryNumber - 1) ~/ 10) {
       case 0:
-        color = Colors.yellow;
+        color = Color.fromRGBO(246, 192, 84, 1);
         break;
       case 1:
-        color = Colors.blue;
+        color = Color.fromRGBO(164, 107, 235, 1);
         break;
       case 2:
-        color = Colors.red;
+        color = Color.fromRGBO(252, 153, 187, 1);
         break;
       case 3:
-        color = Colors.black54;
+        color = Color.fromRGBO(174, 174, 174, 1);
         break;
       case 4:
-        color = Colors.green;
+        color = Color.fromRGBO(246, 192, 84, 1);
         break;
     }
     return color;

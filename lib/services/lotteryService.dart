@@ -41,7 +41,7 @@ Future<List<MyLotteryListModel>> fetchMyLottery(int drwNo) async {
     join(await getDatabasesPath(), 'lottery.db'),
     onCreate: (db, version) {
       return db.execute(
-        "CREATE TABLE my_lottery_list(id INTEGER PRIMARY KEY, drwNo INTEGER, num1 INTEGER, num2 INTEGER, num3 INTEGER, num4 INTEGER, num5 INTEGER, num6 INTEGER)",
+        "CREATE TABLE my_lottery_list(id INTEGER PRIMARY KEY AUTOINCREMENT, drwNo INTEGER, num1 INTEGER, num2 INTEGER, num3 INTEGER, num4 INTEGER, num5 INTEGER, num6 INTEGER)",
       );
     },
     version: 1,
@@ -57,7 +57,7 @@ Future<List<MyLotteryListModel>> fetchMyLotteryList() async {
     join(await getDatabasesPath(), 'lottery.db'),
     onCreate: (db, version) {
       return db.execute(
-        "CREATE TABLE my_lottery_list(id INTEGER PRIMARY KEY, drwNo INTEGER, num1 INTEGER, num2 INTEGER, num3 INTEGER, num4 INTEGER, num5 INTEGER, num6 INTEGER)",
+        "CREATE TABLE my_lottery_list(id INTEGER PRIMARY KEY AUTOINCREMENT, drwNo INTEGER, num1 INTEGER, num2 INTEGER, num3 INTEGER, num4 INTEGER, num5 INTEGER, num6 INTEGER)",
       );
     },
     version: 1,
@@ -73,7 +73,7 @@ Future<void> addLotteryNumbers(MyLotteryListModel myLotteryListModel) async {
     join(await getDatabasesPath(), 'lottery.db'),
     onCreate: (db, version) {
       return db.execute(
-        "CREATE TABLE my_lottery_list(id INTEGER PRIMARY KEY, drwNo INTEGER, num1 INTEGER, num2 INTEGER, num3 INTEGER, num4 INTEGER, num5 INTEGER, num6 INTEGER)",
+        "CREATE TABLE my_lottery_list(id INTEGER PRIMARY KEY AUTOINCREMENT, drwNo INTEGER, num1 INTEGER, num2 INTEGER, num3 INTEGER, num4 INTEGER, num5 INTEGER, num6 INTEGER)",
       );
     },
     version: 1,
@@ -91,4 +91,24 @@ Future<void> addLotteryNumbers(MyLotteryListModel myLotteryListModel) async {
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
+}
+
+Future<void> deleteLotteryNumbers(int id) async {
+  final database = openDatabase(
+    join(await getDatabasesPath(), 'lottery.db'),
+    onCreate: (db, version) {
+      return db.execute(
+        "CREATE TABLE my_lottery_list(id INTEGER PRIMARY KEY AUTOINCREMENT, drwNo INTEGER, num1 INTEGER, num2 INTEGER, num3 INTEGER, num4 INTEGER, num5 INTEGER, num6 INTEGER)",
+      );
+    },
+    version: 1,
+  );
+
+  final Database db = await database;
+
+  await db.delete(
+    'my_lottery_list',
+    where: "id = ?",
+    whereArgs: [id],
+  );
 }

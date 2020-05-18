@@ -8,14 +8,14 @@ part of 'MyLotteryList.model.dart';
 
 MyLotteryListModel _$MyLotteryListModelFromJson(Map<String, dynamic> json) {
   return MyLotteryListModel(
-    json['id'] as int,
-    json['drwNo'] as int,
-    json['num1'] as int,
-    json['num2'] as int,
-    json['num3'] as int,
-    json['num4'] as int,
-    json['num5'] as int,
-    json['num6'] as int,
+    id: json['id'] as int,
+    drwNo: json['drwNo'] as int,
+    num1: json['num1'] as int,
+    num2: json['num2'] as int,
+    num3: json['num3'] as int,
+    num4: json['num4'] as int,
+    num5: json['num5'] as int,
+    num6: json['num6'] as int,
   );
 }
 

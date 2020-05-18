@@ -52,7 +52,6 @@ class LotteryComponent extends StatelessWidget {
         break;
       case 4:
         color = Color.fromRGBO(246, 192, 84, 1);
-        color = Colors.green;
         break;
     }
     return color;
@@ -60,7 +59,6 @@ class LotteryComponent extends StatelessWidget {
 
   Widget gameViewer(AsyncSnapshot snapshot) {
     bool hasData = snapshot.hasData;
-    print(title);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[

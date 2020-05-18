@@ -4,8 +4,8 @@ part 'MyLotteryList.model.g.dart';
 
 @JsonSerializable()
 class MyLotteryListModel {
-  int id;
-  int drwNo;
+  final int id;
+  final int drwNo;
   final int num1;
   final int num2;
   final int num3;
@@ -13,8 +13,8 @@ class MyLotteryListModel {
   final int num5;
   final int num6;
 
-  MyLotteryListModel(this.id, this.drwNo, this.num1, this.num2, this.num3,
-      this.num4, this.num5, this.num6);
+  MyLotteryListModel({this.id, this.drwNo, this.num1, this.num2, this.num3,
+      this.num4, this.num5, this.num6});
 
   factory MyLotteryListModel.fromJson(Map<String, dynamic> json) =>
       _$MyLotteryListModelFromJson(json);

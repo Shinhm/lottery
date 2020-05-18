@@ -181,71 +181,82 @@ class LotteryResult extends StatelessWidget {
                                   Container(
                                     padding: EdgeInsets.only(
                                         top: ScreenUtil().setHeight(30)),
-                                    child: Column(
-                                      children: <Widget>[
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: <Widget>[
-                                            Container(
-                                              width: ScreenUtil().setWidth(60),
-                                              child: Lottie.asset(
-                                                  'assets/lottie/5166-users-icons.json',
-                                                  width:
-                                                      ScreenUtil().setWidth(50),
-                                                  height: ScreenUtil()
-                                                      .setHeight(60)),
-                                            ),
-                                            Container(
-                                              padding: EdgeInsets.only(
-                                                  left: ScreenUtil()
-                                                      .setWidth(10)),
-                                              child: Text(
-                                                '${NumberFormatHelper.numberFormat(rankInfo.winningCnt)}',
-                                                style: TextStyle(
-                                                    fontSize:
-                                                        ScreenUtil().setSp(20),
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                                    child: rank == 6
+                                        ? Container(
+                                            width: ScreenUtil().setWidth(375),
+                                            height: ScreenUtil().setHeight(100),
+                                            child: Center(
+                                              child:
+                                                  Text('나랑 같네 ㅜ.ㅜ... 다음주 1등을 노려보자.'),
+                                            ))
+                                        : Column(
+                                            children: <Widget>[
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: <Widget>[
+                                                  Container(
+                                                    width: ScreenUtil()
+                                                        .setWidth(60),
+                                                    child: Lottie.asset(
+                                                        'assets/lottie/5166-users-icons.json',
+                                                        width: ScreenUtil()
+                                                            .setWidth(50),
+                                                        height: ScreenUtil()
+                                                            .setHeight(60)),
+                                                  ),
+                                                  Container(
+                                                    padding: EdgeInsets.only(
+                                                        left: ScreenUtil()
+                                                            .setWidth(10)),
+                                                    child: Text(
+                                                      '${NumberFormatHelper.numberFormat(rankInfo.winningCnt)}',
+                                                      style: TextStyle(
+                                                          fontSize: ScreenUtil()
+                                                              .setSp(20),
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
-                                            ),
-                                          ],
-                                        ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: <Widget>[
-                                            Lottie.asset(
-                                                'assets/lottie/16320-piggy-bank-coins-in.json',
-                                                width:
-                                                    ScreenUtil().setWidth(60),
-                                                height:
-                                                    ScreenUtil().setHeight(80)),
-                                            Container(
-                                                padding: EdgeInsets.only(
-                                                    top: ScreenUtil()
-                                                        .setHeight(25)),
-                                                child: Icon(FontAwesome.won)),
-                                            Container(
-                                              padding: EdgeInsets.only(
-                                                  top: ScreenUtil()
-                                                      .setHeight(25)),
-                                              child: Text(
-                                                '${NumberFormatHelper.numberFormat(rankInfo.winningPriceByRank)}',
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize:
-                                                        ScreenUtil().setSp(20)),
-                                              ),
-                                            )
-                                          ],
-                                        )
-                                      ],
-                                    ),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: <Widget>[
+                                                  Lottie.asset(
+                                                      'assets/lottie/16320-piggy-bank-coins-in.json',
+                                                      width: ScreenUtil()
+                                                          .setWidth(60),
+                                                      height: ScreenUtil()
+                                                          .setHeight(80)),
+                                                  Container(
+                                                      padding: EdgeInsets.only(
+                                                          top: ScreenUtil()
+                                                              .setHeight(25)),
+                                                      child: Icon(
+                                                          FontAwesome.won)),
+                                                  Container(
+                                                    padding: EdgeInsets.only(
+                                                        top: ScreenUtil()
+                                                            .setHeight(25)),
+                                                    child: Text(
+                                                      '${NumberFormatHelper.numberFormat(rankInfo.winningPriceByRank)}',
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: ScreenUtil()
+                                                              .setSp(20)),
+                                                    ),
+                                                  )
+                                                ],
+                                              )
+                                            ],
+                                          ),
                                   )
                                 ],
                               ),
