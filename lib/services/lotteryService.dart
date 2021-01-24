@@ -9,10 +9,11 @@ import 'package:sqflite/sqflite.dart';
 const host = 'https://www.geniecontents.com';
 
 Future<Lottery> fetchLottery(drwNo) async {
-  final response = await http.get("$host/api/v1/lotto?drawNo=$drwNo");
+  final response = await http.get(
+      "http://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=$drwNo");
   var responseBody = json.decode(response.body);
-  if (responseBody['statusCode'] == '200') {
-    return Lottery.fromJson(responseBody['body']);
+  if (responseBody['returnValue'] == 'success') {
+    return Lottery.fromJson(responseBody);
   } else {
     throw Exception('로또 정보가 없는데염');
   }

@@ -26,6 +26,8 @@ class LotteryComponent extends StatelessWidget {
     return FutureBuilder<Lottery>(
       future: lottery,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
+
+
         if (snapshot.hasError) {
           return Text("${snapshot.error}");
         }
@@ -74,13 +76,13 @@ class LotteryComponent extends StatelessWidget {
         Padding(
           padding: EdgeInsets.only(
               top: ScreenUtil().setHeight(18),
-              bottom: ScreenUtil().setHeight(26)),
+              bottom: ScreenUtil().setHeight(23)),
           child: Row(
             children: <Widget>[
               hasData
                   ? Container(
                       width: ScreenUtil().setWidth(156),
-                      height: ScreenUtil().setHeight(37),
+                      height: ScreenUtil().setHeight(40),
                       child: Text(
                         title == null ? '$lotteryNo회 당첨번호' : title,
                         style: TextStyle(
@@ -117,19 +119,19 @@ class LotteryComponent extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                lotteryNumberItem(lottery.num1),
-                lotteryNumberItem(lottery.num2),
-                lotteryNumberItem(lottery.num3),
-                lotteryNumberItem(lottery.num4),
-                lotteryNumberItem(lottery.num5),
-                lotteryNumberItem(lottery.num6),
+                lotteryNumberItem(lottery.drwtNo1),
+                lotteryNumberItem(lottery.drwtNo2),
+                lotteryNumberItem(lottery.drwtNo3),
+                lotteryNumberItem(lottery.drwtNo4),
+                lotteryNumberItem(lottery.drwtNo5),
+                lotteryNumberItem(lottery.drwtNo6),
                 Container(
                   child: Icon(
                     FontAwesome.plus,
                     size: ScreenUtil().setWidth(12),
                   ),
                 ),
-                lotteryNumberItem(lottery.bonusNum),
+                lotteryNumberItem(lottery.bnusNo),
               ],
             )
           : Skeleton(width: 375, height: 40, type: EnumType.CIRCLE),

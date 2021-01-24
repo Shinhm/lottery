@@ -19,22 +19,22 @@ class LotteryResult extends StatelessWidget {
   int lotteryRank(Lottery winnerNumber, MyLotteryListModel checkNumber) {
     List<bool> returnBool = new List.filled(6, false);
 
-    if (winnerNumber.num1 == checkNumber.num1) {
+    if (winnerNumber.drwtNo1 == checkNumber.num1) {
       returnBool[0] = true;
     }
-    if (winnerNumber.num2 == checkNumber.num2) {
+    if (winnerNumber.drwtNo2 == checkNumber.num2) {
       returnBool[1] = true;
     }
-    if (winnerNumber.num3 == checkNumber.num3) {
+    if (winnerNumber.drwtNo3 == checkNumber.num3) {
       returnBool[2] = true;
     }
-    if (winnerNumber.num4 == checkNumber.num4) {
+    if (winnerNumber.drwtNo4 == checkNumber.num4) {
       returnBool[3] = true;
     }
-    if (winnerNumber.num5 == checkNumber.num5) {
+    if (winnerNumber.drwtNo5 == checkNumber.num5) {
       returnBool[4] = true;
     }
-    if (winnerNumber.num6 == checkNumber.num6) {
+    if (winnerNumber.drwtNo6 == checkNumber.num6) {
       returnBool[5] = true;
     }
 
@@ -54,6 +54,7 @@ class LotteryResult extends StatelessWidget {
     return FutureBuilder(
       future: lottery,
       builder: (BuildContext context, AsyncSnapshot lotterySnapshot) {
+        print(lotterySnapshot);
         var hasData = lotterySnapshot.hasData;
         Lottery lotteryNo = lotterySnapshot.data;
 
@@ -136,42 +137,42 @@ class LotteryResult extends StatelessWidget {
                                     children: <Widget>[
                                       LotteryItem(
                                         active:
-                                            lotteryNo.num1 == myLottery.num1,
+                                            lotteryNo.drwtNo1 == myLottery.num1,
                                         lotteryNumber: myLottery.num1,
                                         backgroundColor:
                                             Color.fromRGBO(219, 218, 216, 1),
                                       ),
                                       LotteryItem(
                                         active:
-                                            lotteryNo.num2 == myLottery.num2,
+                                            lotteryNo.drwtNo2 == myLottery.num2,
                                         lotteryNumber: myLottery.num2,
                                         backgroundColor:
                                             Color.fromRGBO(219, 218, 216, 1),
                                       ),
                                       LotteryItem(
                                         active:
-                                            lotteryNo.num3 == myLottery.num3,
+                                            lotteryNo.drwtNo3 == myLottery.num3,
                                         lotteryNumber: myLottery.num3,
                                         backgroundColor:
                                             Color.fromRGBO(219, 218, 216, 1),
                                       ),
                                       LotteryItem(
                                         active:
-                                            lotteryNo.num4 == myLottery.num4,
+                                            lotteryNo.drwtNo4 == myLottery.num4,
                                         lotteryNumber: myLottery.num4,
                                         backgroundColor:
                                             Color.fromRGBO(219, 218, 216, 1),
                                       ),
                                       LotteryItem(
                                         active:
-                                            lotteryNo.num5 == myLottery.num5,
+                                            lotteryNo.drwtNo5 == myLottery.num5,
                                         lotteryNumber: myLottery.num5,
                                         backgroundColor:
                                             Color.fromRGBO(219, 218, 216, 1),
                                       ),
                                       LotteryItem(
                                         active:
-                                            lotteryNo.num6 == myLottery.num6,
+                                            lotteryNo.drwtNo6 == myLottery.num6,
                                         lotteryNumber: myLottery.num6,
                                         backgroundColor:
                                             Color.fromRGBO(219, 218, 216, 1),

@@ -8,7 +8,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:lottery/components/_common/skeleton.dart';
 import 'package:lottery/models/LotteryPlace.model.dart';
 import 'package:lottery/services/lotteryService.dart';
-import 'package:lottie/lottie.dart';
+import 'package:lottie/lottie.dart' as Lottie;
 
 class MapScreen extends StatefulWidget {
   final int drwNo;
@@ -241,7 +241,7 @@ class _MapScreenState extends State<MapScreen> {
                                               padding: EdgeInsets.only(
                                                   right:
                                                       ScreenUtil().setWidth(5)),
-                                              child: Lottie.asset(
+                                              child: Lottie.Lottie.asset(
                                                   'assets/lottie/store.json',
                                                   width: 25,
                                                   height: 18),
@@ -267,7 +267,7 @@ class _MapScreenState extends State<MapScreen> {
                                             padding: EdgeInsets.only(
                                                 right:
                                                     ScreenUtil().setWidth(5)),
-                                            child: Lottie.asset(
+                                            child: Lottie.Lottie.asset(
                                               'assets/lottie/marker.json',
                                               width: 25,
                                               height: 20,
